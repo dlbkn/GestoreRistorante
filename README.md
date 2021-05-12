@@ -1,2 +1,2 @@
-# ImperatoriRomani
-Web Scraper Wikipedia sugli Imperatori Romani
+# GestoreRistorante
+Gestore di un piccolo ristorante
