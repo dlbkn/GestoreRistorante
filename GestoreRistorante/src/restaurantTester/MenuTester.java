@@ -24,9 +24,7 @@ public class MenuTester {
 		System.out.println("water,1.00");
 		System.out.println("Result:");
 		testMenu.addItem("lobster", 22.00);
-		for (Object[] item : testMenu.getItems()) {
-			System.out.println(Arrays.toString(item));
-		}
+		TesterTools.matrixPrinter(testMenu.getItems());
 		System.out.println();
 		
 		// testing removal of item
@@ -37,14 +35,12 @@ public class MenuTester {
 		System.out.println("water,1.00");
 		System.out.println("Result:");
 		testMenu.removeItem("meat");
-		for (Object[] item : testMenu.getItems()) {
-			System.out.println(Arrays.toString(item));
-		}
+		TesterTools.matrixPrinter(testMenu.getItems());
 		System.out.println();
 		
 		// testing item quantity
 		System.out.println("Expecting: 4");
-		System.out.println("Result: " + testMenu.getQuantity());
+		System.out.println("Result: " + testMenu.getRows());
 		System.out.println();
 		
 		// testing price finder

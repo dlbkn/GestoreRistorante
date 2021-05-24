@@ -1,5 +1,6 @@
 package restaurant;
 
+
 import java.util.HashMap;
 import java.util.Scanner;
 import java.io.File;
@@ -9,14 +10,13 @@ import java.io.FileNotFoundException;
 /**
  * This class represents the menu of the restaurant
  * The menu is read from a given file and can be saved to the same file
- * It is memorised via a HashMap with item names as keys and prices as values
- * Once the menu is open from a file, it can be edited
+ * The menu can be fully edited
  */
 
-public class Menu implements Quantifiable {
+public class Menu implements Bidimensional {
 	
 	// stores the set of menu items
-	private HashMap<String, PricedItem> menu;
+	private HashMap<String, Double> menuMap;
 	// stores the path to menu file
 	private String path;
 	
@@ -25,7 +25,7 @@ public class Menu implements Quantifiable {
 	 * @param path the path is a valid path to a correctly formatted menu file
 	 */
 	public Menu(String path) {
-		this.menu = new HashMap<String, PricedItem>();
+		this.menuMap = new HashMap<String, Double>();
 		this.path = path;
 		this.readFromFile();
 	}
@@ -52,7 +52,7 @@ public class Menu implements Quantifiable {
 				// trying to access data
 				try {
 					// in case two CS values found
-					if (this.menu.containsKey(menuItem[0])) {
+					if (this.menuMap.containsKey(menuItem[0])) {
 						// in case of repeating item names
 						throw new RuntimeException("Repeating value " + menuItem[0]);
 					}
@@ -60,7 +60,7 @@ public class Menu implements Quantifiable {
 					try {
 						// in case price is in valid format
 						itemPrice = Double.parseDouble(menuItem[1]);
-						this.menu.put(menuItem[0], new PricedItem(itemPrice));
+						this.menuMap.put(menuItem[0], Formatter.getFormattedPrice(itemPrice));
 					}
 					catch (NumberFormatException e) {
 						// in case price is not in valid format
@@ -93,7 +93,7 @@ public class Menu implements Quantifiable {
 		try {
 			// in case file exits
 			PrintWriter writer = new PrintWriter(file);
-			for (String item : this.menu.keySet()) {
+			for (String item : this.menuMap.keySet()) {
 				// converting data to text and writing to file
 				itemPrice = String.valueOf(this.getItemPrice(item));
 				writer.write(item + "," + itemPrice + "\n");
@@ -107,58 +107,66 @@ public class Menu implements Quantifiable {
 	}
 	
 	/**
-	 * Gets all menu items with prices and returns them in a matrix of object 
-	 * @return menu items and prices as matrix of objects
-	 */
-	public Object[][] getItems() {
-		// setting variables
-		Object[][] items = new Object[this.getQuantity()][2];
-		int counter = 0;
-		// looping for item and tracking array index by counter
-		for (String item : this.menu.keySet()) {
-			items[counter][0] = item;
-			items[counter][1] = this.getItemPrice(item);
-			counter ++;
-		}
-		return items;
-	}
-	
-	/**
-	 * Gets price of an item given its name
-	 * @param name the name of the item
-	 */
-	public double getItemPrice(String name) {
-		if (!this.menu.containsKey(name)) {
-			throw new IllegalArgumentException("Item not in menu");
-		}
-		return (this.menu.get(name).getPrice());
-	}
-	
-	/**
 	 * Gets the number of items on the menu
 	 * @return the number of items on the menu
 	 */
-	public int getQuantity() {
-		return this.menu.size();
+	public int getRows() {
+		return this.menuMap.size();
+	}
+	
+	/**
+	 * Gets all menu items with prices and returns them in a matrix of Object 
+	 * @return menu items and prices as matrix of Object
+	 */
+	public Object[][] getItems() {
+		return Formatter.getFormattedListFromMap(this.menuMap);
+	}
+	
+	/**
+	 * Gets the price of a given item on the menu
+	 * @param name the name of a given item
+	 * @return the price of a given item
+	 */
+	public double getItemPrice(String name) {
+		if (! this.menuMap.containsKey(name)) {
+			throw new IllegalArgumentException("Item does not exist");
+		}
+		return this.menuMap.get(name);
 	}
 	
 	/**
 	 * Adds a new item to the menu
-	 * Replaces item price if existing item name is given
-	 * @param name the name of the item
+	 * @param name the name of an item not on the menu
 	 * @param price the price of the item is a non negative amount
 	 */
 	public void addItem(String name, double price) {
-		this.menu.put(name, new PricedItem(price));
+		if (this.menuMap.containsKey(name)) {
+			throw new IllegalArgumentException("Item allready exists");
+		}
+		this.menuMap.put(name, Formatter.getFormattedPrice(price));
+	}
+	
+	/**
+	 * Replaces the price of an item on the menu
+	 * @param name the name of the item on the menu
+	 * @param price the price of the item is a non negative amount
+	 */
+	public void replaceItem(String name, double price) {
+		if (! this.menuMap.containsKey(name)) {
+			throw new IllegalArgumentException("Item does not exist");
+		}
+		this.menuMap.replace(name, Formatter.getFormattedPrice(price));
 	}
 	
 	/**
 	 * Removes an item from the menu
-	 * Does not affect menu if non existing item name is given
-	 * @param name the name of the item contained in the menu
+	 * @param name the name of the item on the menu
 	 */
 	public void removeItem(String name) {
-		this.menu.remove(name);
+		if (!this.menuMap.containsKey(name)) {
+			throw new IllegalArgumentException("Item does not exist");
+		}
+		this.menuMap.remove(name);
 	}
 
 }
