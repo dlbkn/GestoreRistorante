@@ -135,9 +135,16 @@ public class GUIOrdine extends JFrame{
                     Integer.parseInt(num.getText());
                     openOrder.sendOrder(Integer.parseInt(num.getText()));
 					openOrder.clear();
+					exitButtonActionPerformed(e);
                  } catch (NumberFormatException nfe) {
                 	 JOptionPane.showMessageDialog(null, "Selezionare solo numeri");
-                 }  
+                 } catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}  
             	
             	
             }
