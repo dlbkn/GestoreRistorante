@@ -12,10 +12,12 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 
+// GUI for waiter, it permit you to make an order selecting the dish and the quantity.
+// GUI per il cameriere, ti permette di creare un ordine e di selezionare il piatto e la quantità.
 
 public class GUICameriere extends JFrame{
 	public Menu menu = new Menu("menu.txt");
-	public OpenOrder openOrder = new OpenOrder(menu,new OrderHolder(new PaymentHolder()));
+	public OpenOrder openOrder;
 	public JTextField text;
 	public Container c;
 	
@@ -26,7 +28,9 @@ public class GUICameriere extends JFrame{
     }
     
     private void init() throws FileNotFoundException, IOException{
-        //FRAME
+    	
+        //Creation of Frame
+    	//Creazione del frame
         setTitle("CAMERIERE");
         setSize(420, 310);
         setLocationRelativeTo(null);
@@ -34,29 +38,33 @@ public class GUICameriere extends JFrame{
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        Container c = this.getContentPane(); 
+        
+        Container c = this.getContentPane();
+        
+        // Creation of panel
+        //Creazione del panel
         JPanel p = new JPanel();
         
+        //Creation of Button for order, exit
         JButton ordine = new JButton("ORDINE");
         JButton exit = new JButton("BACK");
         Dimension size = exit.getPreferredSize();
         
-        
+        //Creation second panel for locate the button
         JPanel p2 = creaMenuBottoni(size); 
         c.add(p2);
         c.add(p);
-        
-        p.setBackground(Color.white);
-        //p2.setBackground(Color.black);
-                                    
+                   
+        //panel size
         p.setSize(100, 300);
         p.setLocation(0,300);
         p2.setSize(420, 310);
         
+        //Creates new label for the panel
+        //Creazione scritte per il panel
         JLabel jl = new JLabel("Piatti");
         JLabel jl2 = new JLabel("Prezzo");
         JLabel jl3 = new JLabel("Quantità");
-        
         
         exit.setBounds(6, 235, size.width, size.height);
         ordine.setBounds(325, 235, size.width, size.height);
@@ -86,13 +94,19 @@ public class GUICameriere extends JFrame{
         p.add(exit);
         p.add(ordine);
         
+        // Action Listener per tornare indietro.
         exit.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
-                exitButtonActionPerformed(e);
+                try {
+					exitButtonActionPerformed(e);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
-        
+        // Action Listener che aggiorna il frame e va all'ordine. 
         ordine.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
@@ -107,22 +121,31 @@ public class GUICameriere extends JFrame{
         
         
     }
-    private void exitButtonActionPerformed(ActionEvent e){
+    
+    //Action Performed per tornare indietro
+    private void exitButtonActionPerformed(ActionEvent e) throws IOException{
     	GUIRistorante r = new GUIRistorante();
         r.setVisible(true);
         this.dispose();
     }
     
+    //Action Performed per aggiornare il frame e andare al pannello dell'ordine
     private void ordineButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
     	GUIOrdine r = new GUIOrdine(openOrder);
         r.setVisible(true);
         this.dispose();
     }
     
+    //Metodo per creare i bottoni per l'ordinazione di un determinato piatto
     private JPanel creaMenuBottoni(Dimension size) throws FileNotFoundException{
         JPanel jp = new JPanel();
         jp.setLayout(null);
         int x = 36;
+        
+        // creo una lista di JButton che verrà riempita tramite il for, che a sua volta legge
+        // degli Object. Nel for, oltre alla creazione dei bottoni, è presente anche un
+        // Action Listener che, se premuto,aggiunge il piatto con l'annessa quantità all'ordine.
+        
         ArrayList<JButton> lista = new ArrayList<JButton>();
         for(int i = 0; i < menu.getItems().length; i++) {
         	lista.add(new JButton((String) menu.getItems()[i][0]));
@@ -156,9 +179,4 @@ public class GUICameriere extends JFrame{
         }
         return jp;
     }
-    
-   
-   public HashMap<String,Integer> returnOrder(){
-	   return openOrder.getOrderMap();
-   }
 }

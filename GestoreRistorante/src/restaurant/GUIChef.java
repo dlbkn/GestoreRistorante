@@ -124,14 +124,19 @@ public class GUIChef extends JFrame{
         exit.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
-                exitButtonActionPerformed(e);
+                try {
+					exitButtonActionPerformed(e);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
         
         
     }
     
-    private void exitButtonActionPerformed(ActionEvent e){
+    private void exitButtonActionPerformed(ActionEvent e) throws IOException{
     	GUIRistorante r = new GUIRistorante();
         r.setVisible(true);
         this.dispose();
@@ -250,7 +255,7 @@ public class GUIChef extends JFrame{
     
     private JScrollPane aggiornaMenu() throws IOException {
     	Restaurant piatti = new Restaurant("menu.txt");
-    	String[] colonne = new String[] {"Piatto", "Prezzo (€)"};
+    	String[] colonne = new String[] {"Piatto", "Prezzo (ï¿½)"};
     	//piatti = menu.getItems();
     	
     	table = new DynamicJTable(piatti.getMenu(), colonne);

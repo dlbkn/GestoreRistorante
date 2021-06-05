@@ -9,8 +9,11 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public class GUIRistorante extends JFrame{
+	
+	public Restaurant res;
 
-	public GUIRistorante(){
+	public GUIRistorante() throws IOException{
+		this.res = new Restaurant("menu.txt");
         init();
     }
     private void init(){
@@ -61,6 +64,17 @@ public class GUIRistorante extends JFrame{
             } 
         });
         panel.add(cuoco);
+        cuoco.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e){
+                try {
+                    cuocoButtonActionPerformed(e);
+                } catch (IOException ex) {
+                    Logger.getLogger(GUIRistorante.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } 
+        });
+        
         panel.add(cass);
         //panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
@@ -74,8 +88,12 @@ public class GUIRistorante extends JFrame{
         this.dispose();
     }
     private void camButtonActionPerformed(ActionEvent e) throws IOException{
-    	GUICameriere cam = new GUICameriere(new OpenOrder(new Menu("menu.txt"), new OrderHolder(new PaymentHolder())));
+    	GUICameriere cam = new GUICameriere(res.getOpenOrder());
         cam.setVisible(true);
         this.dispose();
     }
+    private void cuocoButtonActionPerformed(ActionEvent e) throws IOException{
+    	System.out.println(res.getOrderHolder().getOrder(1));
+    }
+    
 }
