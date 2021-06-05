@@ -29,6 +29,13 @@ public class DynamicJTable extends JTable {
 		this.colNames = colNames;
 		this.map = map;
 		this.display();
+		
+	}
+	/**
+	 * 
+	 */
+	public boolean isCellEditable(int row, int column){
+		return false;
 	}
 	
 	/**
@@ -45,5 +52,7 @@ public class DynamicJTable extends JTable {
 		DefaultTableModel model = new DefaultTableModel(map.getItems(), colNames);
 		this.setModel(model);
 	}
+	
+	
 
 }

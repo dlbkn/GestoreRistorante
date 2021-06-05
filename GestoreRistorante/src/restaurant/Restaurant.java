@@ -1,5 +1,7 @@
 package restaurant;
 
+import java.io.IOException;
+
 /**
  * This class creates the strucure for running a restaurant
  * Instanciate this class when starting the resturant application
@@ -21,8 +23,9 @@ public class Restaurant {
 	 * Constructs a new Restaurant object
 	 * TO BE CONSTRUCTED IN MAIN
 	 * @param pathToMenu the path to the menu
+	 * @throws IOException 
 	 */
-	public Restaurant(String pathToMenu) {
+	public Restaurant(String pathToMenu) throws IOException {
 		this.menu = new Menu(pathToMenu);
 		this.payments = new PaymentHolder();
 		this.orders = new OrderHolder(this.payments);

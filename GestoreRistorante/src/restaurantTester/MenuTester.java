@@ -7,10 +7,11 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class MenuTester {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		// testing creation of menu from file
 		Menu testMenu = new Menu("resources/menu");

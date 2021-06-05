@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,7 +17,7 @@ import restaurant.Restaurant;
 
 public class DynamicJTableTester {
 	
-public static void main(String[] args) {
+public static void main(String[] args) throws IOException {
 		
 		// implementing menu with one dish addition option using DynamicJTable
 		

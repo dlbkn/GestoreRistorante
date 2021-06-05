@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * This class represents the menu of the restaurant
@@ -23,8 +24,9 @@ public class Menu implements Bidimensional {
 	/**
 	 * Constructs a new Menu object and reads menu from a file
 	 * @param path the path is a valid path to a correctly formatted menu file
+	 * @throws IOException 
 	 */
-	public Menu(String path) {
+	public Menu(String path) throws IOException {
 		this.menuMap = new HashMap<String, Double>();
 		this.path = path;
 		this.readFromFile();
@@ -35,48 +37,53 @@ public class Menu implements Bidimensional {
 	 * Saves data in the menu if the file is formatted correctly
 	 * Catches formatting error and disregards incorrectly formatted rows
 	 * Catches invalid file path
+	 * @throws IOException 
 	 */
-	public void readFromFile() {
+	public void readFromFile() throws IOException {
 		// declaring auxiliary variables
 		String line;
 		String[] menuItem;
 		Double itemPrice;
 		File file = new File(this.path);
 		// trying to open file
-		try {
-			// in case file exits
-			Scanner stream = new Scanner(file);
-			while (stream.hasNext()) {
-				line = stream.next();
-				menuItem = line.split(",");
-				// trying to access data
-				try {
-					// in case two CS values found
-					if (this.menuMap.containsKey(menuItem[0])) {
-						// in case of repeating item names
-						throw new RuntimeException("Repeating value " + menuItem[0]);
-					}
-					// trying to insert data into map
+		if(file.exists()) {
+			try {
+				// in case file exits
+				Scanner stream = new Scanner(file);
+				while (stream.hasNext()) {
+					line = stream.next();
+					menuItem = line.split(",");
+					// trying to access data
 					try {
-						// in case price is in valid format
-						itemPrice = Double.parseDouble(menuItem[1]);
-						this.menuMap.put(menuItem[0], Formatter.getFormattedPrice(itemPrice));
+						// in case two CS values found
+						if (this.menuMap.containsKey(menuItem[0])) {
+							// in case of repeating item names
+							throw new RuntimeException("Repeating value " + menuItem[0]);
+						}
+						// trying to insert data into map
+						try {
+							// in case price is in valid format
+							itemPrice = Double.parseDouble(menuItem[1]);
+							this.menuMap.put(menuItem[0], Formatter.getFormattedPrice(itemPrice));
+						}
+						catch (NumberFormatException e) {
+							// in case price is not in valid format
+							e.printStackTrace();
+						}
 					}
-					catch (NumberFormatException e) {
-						// in case price is not in valid format
+					catch (ArrayIndexOutOfBoundsException e) {
+						// in case  two CS values not found
 						e.printStackTrace();
 					}
 				}
-				catch (ArrayIndexOutOfBoundsException e) {
-					// in case  two CS values not found
-					e.printStackTrace();
-				}
+				stream.close();
+			} 
+			catch (FileNotFoundException e) {
+				// in case file does not exist
+				e.printStackTrace();
 			}
-			stream.close();
-		} 
-		catch (FileNotFoundException e) {
-			// in case file does not exist
-			e.printStackTrace();
+		}else {
+			file.createNewFile();
 		}
 	}
 	

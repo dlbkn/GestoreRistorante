@@ -2,12 +2,15 @@ package restaurantTester;
 
 import restaurant.OrderHolder;
 import restaurant.PaymentHolder;
+
+import java.io.IOException;
+
 import restaurant.Menu;
 import restaurant.OpenOrder;
 
 public class OrderHolderTester {
 	
-public static void main(String[] args) {
+public static void main(String[] args) throws IOException {
 		
 		// creation of new OrderHolder
 		Menu menu = new Menu("resources/menu");
