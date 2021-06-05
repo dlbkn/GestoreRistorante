@@ -3,13 +3,25 @@ package restaurant;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.*;
 
+
+
 public class GUICameriere extends JFrame{
-	Menu menu = new Menu("menu.txt");
+	public Menu menu = new Menu("menu.txt");
+	public OpenOrder openOrder = new OpenOrder(menu,new OrderHolder(new PaymentHolder()));
+	public JTextField text;
+	public Container c;
 	
-	public GUICameriere() throws IOException{
+	
+	public GUICameriere(OpenOrder openOrder) throws FileNotFoundException, IOException{
+		this.openOrder = openOrder;
         init();
     }
     
@@ -24,25 +36,30 @@ public class GUICameriere extends JFrame{
         
         Container c = this.getContentPane(); 
         JPanel p = new JPanel();
-        c.add(p);
         
+        JButton ordine = new JButton("ORDINE");
         JButton exit = new JButton("BACK");
         Dimension size = exit.getPreferredSize();
         
+        
         JPanel p2 = creaMenuBottoni(size); 
         c.add(p2);
+        c.add(p);
         
-        //p.setBackground(Color.white);
+        p.setBackground(Color.white);
         //p2.setBackground(Color.black);
                                     
-        p.setSize(100, 310);
-        p2.setSize(320, 300);
+        p.setSize(100, 300);
+        p.setLocation(0,300);
+        p2.setSize(420, 310);
         
         JLabel jl = new JLabel("Piatti");
         JLabel jl2 = new JLabel("Prezzo");
+        JLabel jl3 = new JLabel("Quantit√†");
         
         
         exit.setBounds(6, 235, size.width, size.height);
+        ordine.setBounds(325, 235, size.width, size.height);
         
         p.setLayout(null);
         p2.setLayout(null);
@@ -54,12 +71,20 @@ public class GUICameriere extends JFrame{
         jl2.setLocation(330, 0);
         jl2.setSize(100, 40);
         
+        jl3.setLocation(25, 0);
+        jl3.setSize(100,40);
+        
+        text = new JTextField(10);
+        text.setSize(30, 30);
+        text.setLocation(25, 36);
         
         p2.add(jl);
         p2.add(jl2);
-        
+        p2.add(jl3);
+        p2.add(text);
         
         p.add(exit);
+        p.add(ordine);
         
         exit.addActionListener(new ActionListener()
         {
@@ -68,9 +93,28 @@ public class GUICameriere extends JFrame{
             }
         });
         
+        ordine.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e){
+            	try {
+                    ordineButtonActionPerformed(e);
+                } catch (IOException ex) {
+                    Logger.getLogger(GUIRistorante.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+        
+        
     }
     private void exitButtonActionPerformed(ActionEvent e){
     	GUIRistorante r = new GUIRistorante();
+        r.setVisible(true);
+        this.dispose();
+    }
+    
+    private void ordineButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
+    	GUIOrdine r = new GUIOrdine(openOrder);
         r.setVisible(true);
         this.dispose();
     }
@@ -79,22 +123,42 @@ public class GUICameriere extends JFrame{
         JPanel jp = new JPanel();
         jp.setLayout(null);
         int x = 36;
-        
+        ArrayList<JButton> lista = new ArrayList<JButton>();
         for(int i = 0; i < menu.getItems().length; i++) {
-        	String nome = (String) menu.getItems()[i][0];
-        	JButton piatto = new JButton(nome);
-            piatto.setBounds(6, x, 90, size.height);
-            piatto.setLocation(125, x);
+        	lista.add(new JButton((String) menu.getItems()[i][0]));
+        	
+            lista.get(i).setBounds(6, x, 90, size.height);
+            lista.get(i).setLocation(125, x);
             
-            JLabel prezzo = new JLabel("Ä " + menu.getItemPrice(nome));
+            JLabel prezzo = new JLabel("ÔøΩ " + menu.getItemPrice(lista.get(i).getText()));
+            
             prezzo.setSize(100, 20);
             prezzo.setLocation(330, x);
             
             x+=30;
             
-            jp.add(piatto);
+            jp.add(lista.get(i));
             jp.add(prezzo);
+            String nome = (String) menu.getItems()[i][0];
+            
+            
+            lista.get(i).addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e){
+                	String val = text.getText();
+                	int num = Integer.parseInt(val);
+                	openOrder.addItem(nome,num); 
+                	System.out.println(openOrder.getOrderMap());
+                	text.setText("");
+                }
+            });
+            
         }
         return jp;
     }
+    
+   
+   public HashMap<String,Integer> returnOrder(){
+	   return openOrder.getOrderMap();
+   }
 }

@@ -37,6 +37,7 @@ public class GUIRistorante extends JFrame{
         cass.setBounds(160, 100, size.width, size.height);
         panel.setLayout(null);
         panel.add(chef);
+        
         chef.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
@@ -47,6 +48,7 @@ public class GUIRistorante extends JFrame{
                 }
             } 
         });
+        
         panel.add(cam);
         cam.addActionListener(new ActionListener()
         {
@@ -72,7 +74,7 @@ public class GUIRistorante extends JFrame{
         this.dispose();
     }
     private void camButtonActionPerformed(ActionEvent e) throws IOException{
-    	GUICameriere cam = new GUICameriere();
+    	GUICameriere cam = new GUICameriere(new OpenOrder(new Menu("menu.txt"), new OrderHolder(new PaymentHolder())));
         cam.setVisible(true);
         this.dispose();
     }
