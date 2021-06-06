@@ -124,7 +124,14 @@ public class GUICameriere extends JFrame{
     
     //Action Performed per tornare indietro
     private void exitButtonActionPerformed(ActionEvent e) throws IOException{
-    	GUIRistorante r = new GUIRistorante();
+    	/*
+    	 * ERRORE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    	 * 
+    	 * Creazione di un nuovo GUIRistorante crea un nuovo classe Restaurant
+    	 * Quel nuovo classe Restaurant e vuoto allora ordini vengono persi 
+    	 * 
+    	 */
+    	GUIRistorante r = new GUIRistorante(); //  <--------------
         r.setVisible(true);
         this.dispose();
     }

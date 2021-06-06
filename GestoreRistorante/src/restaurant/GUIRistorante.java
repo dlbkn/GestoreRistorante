@@ -83,7 +83,7 @@ public class GUIRistorante extends JFrame{
         
     }
     private void chefButtonActionPerformed(ActionEvent e) throws IOException{
-        GUIChef ch = new GUIChef();
+        GUIChef ch = new GUIChef(res.getMenu());
         ch.setVisible(true);
         this.dispose();
     }

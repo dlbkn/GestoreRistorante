@@ -13,13 +13,16 @@ import application.DynamicJTable;
 
 public class GUIChef extends JFrame{
 	
-	Menu menu = new Menu("menu.txt");  
+	Menu menu;
 	
 	DynamicJTable table;
-	JScrollPane scroll = aggiornaMenu();
+	JScrollPane scroll;
 	JPanel pview = new JPanel();
 	
-	public GUIChef() throws FileNotFoundException, IOException{
+	public GUIChef(Menu menu) throws FileNotFoundException, IOException{
+		super();
+		this.menu = menu;
+		this.scroll = this.aggiornaMenu();
         init();         
     }
 	
@@ -254,11 +257,10 @@ public class GUIChef extends JFrame{
   
     
     private JScrollPane aggiornaMenu() throws IOException {
-    	Restaurant piatti = new Restaurant("menu.txt");
     	String[] colonne = new String[] {"Piatto", "Prezzo (�)"};
     	//piatti = menu.getItems();
     	
-    	table = new DynamicJTable(piatti.getMenu(), colonne);
+    	table = new DynamicJTable(this.menu, colonne);
     	table.setShowGrid(false);
         //table.setEnabled(false);
         
