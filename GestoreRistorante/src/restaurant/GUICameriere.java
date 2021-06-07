@@ -131,8 +131,8 @@ public class GUICameriere extends JFrame{
     	 * Quel nuovo classe Restaurant e vuoto allora ordini vengono persi 
     	 * 
     	 */
-    	GUIRistorante r = new GUIRistorante(); //  <--------------
-        r.setVisible(true);
+    	// GUIRistorante r = new GUIRistorante(); //  <--------------
+        // r.setVisible(true);
         this.dispose();
     }
     

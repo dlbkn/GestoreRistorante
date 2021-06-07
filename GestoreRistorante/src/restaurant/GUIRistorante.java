@@ -85,12 +85,12 @@ public class GUIRistorante extends JFrame{
     private void chefButtonActionPerformed(ActionEvent e) throws IOException{
         GUIChef ch = new GUIChef(res.getMenu());
         ch.setVisible(true);
-        this.dispose();
+        // this.dispose();
     }
     private void camButtonActionPerformed(ActionEvent e) throws IOException{
     	GUICameriere cam = new GUICameriere(res.getOpenOrder());
         cam.setVisible(true);
-        this.dispose();
+        // this.dispose();
     }
     private void cuocoButtonActionPerformed(ActionEvent e) throws IOException{
     	System.out.println(res.getOrderHolder().getOrder(1));
