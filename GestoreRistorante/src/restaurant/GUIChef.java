@@ -32,7 +32,7 @@ public class GUIChef extends JFrame{
         setSize(420, 310);
         setLocationRelativeTo(null);
         setResizable(false);
-        setVisible(true);
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
         
         

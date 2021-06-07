@@ -1,4 +1,6 @@
 aaa,111.0
+ab,10.13
 fgd,43.0
 dsa,324.0
+piatto,17.0
 acqua,1.0

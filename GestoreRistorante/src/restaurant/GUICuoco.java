@@ -29,7 +29,6 @@ public class GUICuoco extends JFrame{
         setSize(420, 310);
         setLocationRelativeTo(null);
         setResizable(false);
-        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
         Container c = this.getContentPane();
@@ -40,7 +39,7 @@ public class GUICuoco extends JFrame{
         c.add(p);
         
         JButton exit = new JButton("EXIT");
-        exit.setLocation(getMousePosition());
+        
         
         JButton invio = new JButton("INVIO");
         
@@ -80,6 +79,7 @@ public class GUICuoco extends JFrame{
 	}
 	
 	private void exitButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
-        this.dispose();}
+        this.dispose();
+        }
 	
 }

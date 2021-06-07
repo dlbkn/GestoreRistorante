@@ -13,10 +13,12 @@ public class GUIRistorante extends JFrame{
 	public Restaurant res;
 	public GUIChef chef;
 	public GUICameriere cameriere;
+	public GUICuoco cuoco;
 	// public GIUCuoco cuoco;
 
 	public GUIRistorante() throws IOException{
 		this.res = new Restaurant("menu.txt");
+		
         init();
     }
     private void init(){
@@ -99,12 +101,15 @@ public class GUIRistorante extends JFrame{
     }
     private void cuocoButtonActionPerformed(ActionEvent e) throws IOException{
     	if (newFrameValidation()) {
-    		System.out.println(res.getOrderHolder().getOrder(1));
+    	//	System.out.println(res.getOrderHolder().getOrder(1));
+    		this.cuoco = new GUICuoco(res.getOrderHolder());
+    		this.cuoco.setVisible(true);
     	}
     }
     
     private boolean newFrameValidation() {
-    	return(this.chef == null && this.cameriere == null);
+    	return !(this.chef.isVisible() || this.cuoco.isVisible() || this.cameriere.isVisible());
+		
     }
     
     

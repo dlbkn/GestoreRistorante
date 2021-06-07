@@ -35,7 +35,7 @@ public class GUICameriere extends JFrame{
         setSize(420, 310);
         setLocationRelativeTo(null);
         setResizable(false);
-        setVisible(true);
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
@@ -133,7 +133,7 @@ public class GUICameriere extends JFrame{
     	 */
     	// GUIRistorante r = new GUIRistorante(); //  <--------------
         // r.setVisible(true);
-        this.dispose();
+        this.setVisible(false);
     }
     
     //Action Performed per aggiornare il frame e andare al pannello dell'ordine
