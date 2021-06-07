@@ -11,6 +11,9 @@ import javax.swing.*;
 public class GUIRistorante extends JFrame{
 	
 	public Restaurant res;
+	public GUIChef chef;
+	public GUICameriere cameriere;
+	// public GIUCuoco cuoco;
 
 	public GUIRistorante() throws IOException{
 		this.res = new Restaurant("menu.txt");
@@ -83,17 +86,27 @@ public class GUIRistorante extends JFrame{
         
     }
     private void chefButtonActionPerformed(ActionEvent e) throws IOException{
-        GUIChef ch = new GUIChef(res.getMenu());
-        ch.setVisible(true);
-        // this.dispose();
+    	if (newFrameValidation()) {
+    		this.chef = new GUIChef(res.getMenu());
+    		this.chef.setVisible(true);
+    	}
     }
     private void camButtonActionPerformed(ActionEvent e) throws IOException{
-    	GUICameriere cam = new GUICameriere(res.getOpenOrder());
-        cam.setVisible(true);
-        // this.dispose();
+    	if (newFrameValidation()) {
+    		this.cameriere = new GUICameriere(res.getOpenOrder());
+    		this.cameriere.setVisible(true);
+    	}
     }
     private void cuocoButtonActionPerformed(ActionEvent e) throws IOException{
-    	System.out.println(res.getOrderHolder().getOrder(1));
+    	if (newFrameValidation()) {
+    		System.out.println(res.getOrderHolder().getOrder(1));
+    	}
     }
+    
+    private boolean newFrameValidation() {
+    	return(this.chef == null && this.cameriere == null);
+    }
+    
+    
     
 }
