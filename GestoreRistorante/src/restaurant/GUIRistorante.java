@@ -18,7 +18,9 @@ public class GUIRistorante extends JFrame{
 
 	public GUIRistorante() throws IOException{
 		this.res = new Restaurant("menu.txt");
-		
+		this.chef = new GUIChef(this.res.getMenu());
+		this.cameriere = new GUICameriere(this.res.getOpenOrder());
+		this.cuoco = new GUICuoco(this.res.getOrderHolder());
         init();
     }
     private void init(){
