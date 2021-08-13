@@ -29,88 +29,72 @@ public class GUIChef extends JFrame{
     private void init() throws FileNotFoundException, IOException{
     	
         setTitle("CHEF");
-        setSize(420, 310);
+        setSize(520, 310);
         setLocationRelativeTo(null);
         setResizable(false);
-        
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
         JPanel p = new JPanel();
         
-        JButton view = new JButton("MENU'");
         JButton add = new JButton("AGGIUNGI");
         JButton del = new JButton("ELIMINA");
         JButton mod = new JButton("MODIFICA");
         JButton exit = new JButton("BACK");
         
-        Container c = this.getContentPane();
+
         Dimension size = mod.getPreferredSize();
         
-        c.add(p);
-        c.add(pview);
-
-        
-        //pview.setLocation(20,10);
-        
-        view.setBounds(6, 10, size.width, size.height);
-        add.setBounds(6, 50, size.width, size.height);
-        del.setBounds(6, 90, size.width, size.height);
+        add.setBounds(6, 10, size.width, size.height);
+        del.setBounds(6, 70, size.width, size.height);
         mod.setBounds(6, 130, size.width, size.height);
         exit.setBounds(6, 235, size.width, size.height);
         
-        p.setSize(100, 310);
+        p.setSize(100, 520);
         p.setLayout(null);
-        p.add(view);
         p.add(add);
         p.add(mod);
         p.add(del);
         p.add(exit);
         p.setBackground(Color.white);//Da cambiare/eliminare
         
-        pview.setSize(420,150);
+        pview.setSize(520,150);
         pview.setLayout(null);
         pview.setBackground(Color.red);//Da cambiare/eliminare
         pview.add(scroll);
         
         scroll.setLocation(100, 0);
-        scroll.setSize(305,150);
+        scroll.setSize(405,150);
         scroll.setVisible(true);
         //text.setEditable(false);
         table.setShowGrid(false);
-
-        
         
         JPanel padd = aggiungiPiatto();
+        JPanel pdel = rimuoviPiatto();
+        JPanel pedit = modificaPiatto();
+       
+        //c.add(padd);
         
-        c.add(padd);
-        padd.setSize(320, 300);
+        //c.add(pdel);
+         
+        add(p);
+        add(pview);
+        add(padd);
+        add(pdel);
+        add(pedit);
+        
+        
+        padd.setSize(420, 400);
         padd.setBackground(Color.yellow);//Da cambiare/eliminare
         
+        pdel.setSize(420, 400);
+        pdel.setBackground(Color.black);//Da cambiare/eliminare
         
-        //Listener Bottoni        
-        view.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                //if(scroll.isVisible() && pview.isVisible()){
-                    
-                    //scroll = aggiornaTabella();
-                    pview.remove(scroll);
-                    pview.setVisible(false);
-                    scroll.setVisible(false);
-                //}else{
-                	
-                    try {
-						scroll = aggiornaMenu();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                    pview.add(scroll);
-                    //scroll.setVisible(true);
-                    pview.setVisible(true);
-                //}
-            }                
-        });
+        pedit.setSize(420, 400);
+        pedit.setBackground(Color.green);//Da cambiare/eliminare
+        
+        //Listener Bottoni  
         
         add.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -119,11 +103,40 @@ public class GUIChef extends JFrame{
                     padd.setVisible(false);
                     
                 }else{
+                	pdel.setVisible(false);
+                	pedit.setVisible(false);
                     padd.setVisible(true);
                 }
             }                
         });
         
+        del.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	
+            	if(pdel.isVisible()){
+                    pdel.setVisible(false);
+                    
+                }else{
+                	padd.setVisible(false);
+                	pedit.setVisible(false);
+                    pdel.setVisible(true);
+                }
+            }                
+        });
+        
+        mod.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	
+            	if(pedit.isVisible()){
+                    pedit.setVisible(false);
+                    
+                }else{
+                	padd.setVisible(false);
+                	pdel.setVisible(false);
+                    pedit.setVisible(true);
+                }
+            }                
+        });
         exit.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
@@ -133,6 +146,7 @@ public class GUIChef extends JFrame{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+            	
             }
         });
         
@@ -220,31 +234,181 @@ public class GUIChef extends JFrame{
             }
         });
         
-        nomePiattoField.setLocation(146, 170);
+        nomePiattoField.setLocation(146, 185);
         nomePiattoField.setSize(100, 20);
         
-        prezzoPiattoField.setLocation(146, 200);
+        prezzoPiattoField.setLocation(146, 215);
         prezzoPiattoField.setSize(100, 20);
         
-        salva.setBounds(270, 185, 75, 20);
+        salva.setBounds(270, 200, 75, 20);
         
         jp.setLayout(null);
         jp.add(nomePiattoField);
         jp.add(prezzoPiattoField);
-        jp.add(salva);
+        jp.add(salva); 
         jp.setVisible(false);
-        
-        
+               
         return jp;
-        
-        
     }
+    
+    private JPanel rimuoviPiatto() {
+    	JPanel jpr = new JPanel();
+    	JButton rimuovi = new JButton("RIMUOVI");
+    	
+    	JTextField piattoRemover = new JTextField("Piatto da rimuovere");
+    	piattoRemover.setForeground(new Color(153,153,153));
+    	
+    	piattoRemover.addFocusListener(new FocusListener(){
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if(piattoRemover.getText().equals("Piatto da rimuovere")) {
+					piattoRemover.setText("");
+					piattoRemover.setForeground(Color.BLACK);
+				}else if (piattoRemover.getText().equals("") ){
+					piattoRemover.setForeground(Color.GRAY);
+				}
+				
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if(piattoRemover.getText().equals("")) {
+					piattoRemover.setText("Piatto da rimuovere");
+					piattoRemover.setForeground(Color.GRAY);
+				}else {
+					piattoRemover.setForeground(Color.BLACK);
+				}
+			}
+        	
+        });
+    	
+    	rimuovi.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e){
+            	
+            	try {
+					removeButtonActionPerformed(e, piattoRemover);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
+        });
+    	
+    	piattoRemover.setLocation(146, 200);
+    	piattoRemover.setSize(120, 20);
+    	rimuovi.setBounds(270, 200, 90, 20);
+    	
+    	jpr.setLayout(null);
+        jpr.add(piattoRemover);
+        jpr.add(rimuovi);
+        jpr.setVisible(false);
+    	
+    	return jpr;
+    }
+    
+    private JPanel modificaPiatto() {
+    	JPanel jpm = new JPanel();
+    	JButton edit = new JButton("EDIT");
+    	
+    	JTextField piatto = new JTextField("Piatto");
+    	piatto.setForeground(new Color(153,153,153));
+    	
+    	JTextField nuovoPrezzo = new JTextField("Nuovo prezzo");
+    	nuovoPrezzo.setForeground(new Color(153,153,153));
+    	
+    	piatto.addFocusListener(new FocusListener(){
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if(piatto.getText().equals("Piatto")) {
+					piatto.setText("");
+					piatto.setForeground(Color.BLACK);
+				}else if (piatto.getText().equals("") ){
+					piatto.setForeground(Color.GRAY);
+				}
+				
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if(piatto.getText().equals("")) {
+					piatto.setText("Piatto");
+					piatto.setForeground(Color.GRAY);
+				}else {
+					piatto.setForeground(Color.BLACK);
+				}
+			}
+        	
+        });
+    	
+    	nuovoPrezzo.addFocusListener(new FocusListener(){
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if(nuovoPrezzo.getText().equals("Nuovo prezzo")) {
+					nuovoPrezzo.setText("");
+					nuovoPrezzo.setForeground(Color.BLACK);
+				}else if (nuovoPrezzo.getText().equals("") ){
+					nuovoPrezzo.setForeground(Color.GRAY);
+				}
+				
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				if(nuovoPrezzo.getText().equals("")) {
+					nuovoPrezzo.setText("Nuovo prezzo");
+					nuovoPrezzo.setForeground(Color.GRAY);
+				}else {
+					nuovoPrezzo.setForeground(Color.BLACK);
+				}
+			}
+        	
+        });
+    	
+    	edit.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e){
+            	
+            	try {
+					editButtonActionPerformed(e, piatto, nuovoPrezzo);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
+        });
+    	
+    	
+    	piatto.setLocation(146, 185);
+    	nuovoPrezzo.setLocation(146, 215);
+    	
+    	piatto.setSize(100, 20);
+
+    	nuovoPrezzo.setSize(100, 20);
+    	edit.setBounds(270, 200, 75, 20);
+    	
+    	jpm.setLayout(null);
+        jpm.add(piatto);
+
+        jpm.add(nuovoPrezzo);
+        jpm.add(edit);
+        jpm.setVisible(false);
+    	
+    	return jpm;
+    }
+    
     private void saveButtonActionPerformed(ActionEvent e, JTextField nomePiattoField, JTextField prezzoPiattoField) throws IOException{
     	menu.addItem(nomePiattoField.getText(), Double.parseDouble(prezzoPiattoField.getText()));
         System.out.print(nomePiattoField.getText() + Double.parseDouble(prezzoPiattoField.getText()));
         menu.WriteToFile();                
         
-        pview.remove(scroll);                           
+        pview.remove(scroll);            
         scroll = aggiornaMenu();
         pview.add(scroll);
         
@@ -255,9 +419,33 @@ public class GUIChef extends JFrame{
         prezzoPiattoField.setForeground(Color.GRAY);
     }
   
+    private void removeButtonActionPerformed(ActionEvent e, JTextField piattoRemover) throws IOException {
+    	menu.removeItem(piattoRemover.getText());
+    	menu.WriteToFile();
+    	pview.remove(scroll);            
+        scroll = aggiornaMenu();
+        pview.add(scroll);
+        
+        piattoRemover.setText("Piatto da rimuovere");
+		piattoRemover.setForeground(Color.GRAY);
+    }
+    
+    private void editButtonActionPerformed(ActionEvent e, JTextField piatto, JTextField nuovoPrezzo) throws IOException {
+    	menu.replaceItem(piatto.getText(), Double.parseDouble(nuovoPrezzo.getText()));
+    	menu.WriteToFile();
+    	pview.remove(scroll);            
+        scroll = aggiornaMenu();
+        pview.add(scroll);
+    	
+        piatto.setText("Piatto");
+		piatto.setForeground(Color.GRAY);
+        
+        nuovoPrezzo.setText("Nuovo prezzo");
+		nuovoPrezzo.setForeground(Color.GRAY);
+    }
     
     private JScrollPane aggiornaMenu() throws IOException {
-    	String[] colonne = new String[] {"Piatto", "Prezzo (�)"};
+    	String[] colonne = new String[] {"Piatto", "Prezzo ($)"};
     	//piatti = menu.getItems();
     	
     	table = new DynamicJTable(this.menu, colonne);
@@ -266,7 +454,7 @@ public class GUIChef extends JFrame{
         
     	scroll = new JScrollPane (table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	scroll.setLocation(100, 0);
-        scroll.setSize(305,150);
+        scroll.setSize(405,150);
         //scroll.setVisible(true);
                 
     	return scroll;

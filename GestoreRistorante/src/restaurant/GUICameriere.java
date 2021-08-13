@@ -64,7 +64,7 @@ public class GUICameriere extends JFrame{
         //Creazione scritte per il panel
         JLabel jl = new JLabel("Piatti");
         JLabel jl2 = new JLabel("Prezzo");
-        JLabel jl3 = new JLabel("QuantitÃ ");
+        JLabel jl3 = new JLabel("Quantità");
         
         exit.setBounds(6, 235, size.width, size.height);
         ordine.setBounds(325, 235, size.width, size.height);
@@ -160,7 +160,7 @@ public class GUICameriere extends JFrame{
             lista.get(i).setBounds(6, x, 90, size.height);
             lista.get(i).setLocation(125, x);
             
-            JLabel prezzo = new JLabel("ï¿½ " + menu.getItemPrice(lista.get(i).getText()));
+            JLabel prezzo = new JLabel("$ " + menu.getItemPrice(lista.get(i).getText()));
             
             prezzo.setSize(100, 20);
             prezzo.setLocation(330, x);

@@ -14,18 +14,14 @@ public class GUIRistorante extends JFrame{
 	public GUIChef chef;
 	public GUICameriere cameriere;
 	public GUICuoco cuoco;
-	// public GIUCuoco cuoco;
 
 	public GUIRistorante() throws IOException{
 		this.res = new Restaurant("menu.txt");
-		this.chef = new GUIChef(this.res.getMenu());
-		this.cameriere = new GUICameriere(this.res.getOpenOrder());
-		this.cuoco = new GUICuoco(this.res.getOrderHolder());
         init();
     }
     private void init(){
         setTitle("RISTORANTE");
-        setSize (300,200); // imposta le dimensioni
+        setSize (500,300); // imposta le dimensioni
         setLocationRelativeTo(null);// centra il frame
         setResizable(false);
         setVisible (true); // rende visibile f
@@ -103,17 +99,20 @@ public class GUIRistorante extends JFrame{
     }
     private void cuocoButtonActionPerformed(ActionEvent e) throws IOException{
     	if (newFrameValidation()) {
-    	//	System.out.println(res.getOrderHolder().getOrder(1));
+    		//System.out.println(res.getOrderHolder().getOrder(1));
     		this.cuoco = new GUICuoco(res.getOrderHolder());
     		this.cuoco.setVisible(true);
     	}
     }
     
     private boolean newFrameValidation() {
+    	return(this.chef == null && this.cameriere == null);
+    }
+    
+/*
+    private boolean newFrameValidation() {
     	return !(this.chef.isVisible() || this.cuoco.isVisible() || this.cameriere.isVisible());
 		
     }
-    
-    
-    
+*/     
 }
