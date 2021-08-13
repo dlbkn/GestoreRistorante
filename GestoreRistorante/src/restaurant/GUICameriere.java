@@ -67,7 +67,7 @@ public class GUICameriere extends JFrame{
         JLabel jl3 = new JLabel("Quantità");
         
         exit.setBounds(6, 235, size.width, size.height);
-        ordine.setBounds(325, 235, size.width, size.height);
+        ordine.setBounds(300, 235, 90, size.height);
         
         p.setLayout(null);
         p2.setLayout(null);
@@ -83,7 +83,7 @@ public class GUICameriere extends JFrame{
         jl3.setSize(100,40);
         
         text = new JTextField(10);
-        text.setSize(30, 30);
+        text.setSize(35, 25);
         text.setLocation(25, 36);
         
         p2.add(jl);
