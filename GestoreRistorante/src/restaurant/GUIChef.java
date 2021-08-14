@@ -149,8 +149,7 @@ public class GUIChef extends JFrame{
             	
             }
         });
-        
-        
+  
     }
     
     private void exitButtonActionPerformed(ActionEvent e) throws IOException{
