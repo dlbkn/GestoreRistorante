@@ -86,23 +86,23 @@ public class GUIRistorante extends JFrame{
         
     }
     private void chefButtonActionPerformed(ActionEvent e) throws IOException{
-    	if (newFrameValidation()) {
+    	//if (newFrameValidation()) {
     		this.chef = new GUIChef(res.getMenu());
     		this.chef.setVisible(true);
-    	}
+    	//}
     }
     private void camButtonActionPerformed(ActionEvent e) throws IOException{
-    	if (newFrameValidation()) {
+    	//if (newFrameValidation()) {
     		this.cameriere = new GUICameriere(res.getOpenOrder());
     		this.cameriere.setVisible(true);
-    	}
+    	//}
     }
     private void cuocoButtonActionPerformed(ActionEvent e) throws IOException{
-    	if (newFrameValidation()) {
+    	//if (newFrameValidation()) {
     		//System.out.println(res.getOrderHolder().getOrder(1));
     		this.cuoco = new GUICuoco(res.getOrderHolder());
     		this.cuoco.setVisible(true);
-    	}
+    	//}
     }
     
     private boolean newFrameValidation() {

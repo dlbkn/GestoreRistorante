@@ -35,18 +35,27 @@ public class GUICuoco extends JFrame{
         // Creation of panel
         //Creazione del panel
         JPanel p = new JPanel();
+        JPanel piatti = new JPanel();
         
         p.setSize(520, 310);
         p.setLayout(null);
         
+        piatti.setSize(520, 310);
+        piatti.setLayout(null);
         
         JButton exit = new JButton("EXIT");
         JButton invio = new JButton("INVIO");
+        
+        JButton back = new JButton("BACK");
+        JButton remove = new JButton("REMOVE");
         
         Dimension size = invio.getPreferredSize();
         
         exit.setBounds(10, 235, size.width, size.height);
         invio.setBounds(430, 235, size.width, size.height);
+        
+        back.setBounds(10, 235, 70, size.height);
+        remove.setBounds(110, 235, 90, size.height);
         
         //DynamicJTable table = new DynamicJTable(orderHolder,colonne);
         //add(scroll);
@@ -61,19 +70,84 @@ public class GUICuoco extends JFrame{
         p.add(scroll);
         p.setBackground(Color.white);//Da cambiare/eliminare
         
-        add(p);
+        piatti.add(back);
+        piatti.add(remove);
+        //piatti.add(scroll2); //creare nuovo scroll oppure nuovo frame oppure trovare modo di aggiornare
+        piatti.setBackground(Color.yellow);
         
+        piatti.setVisible(false);
+        add(p);
+     
+        add(piatti);
         
         table.getSelectionModel().addListSelectionListener((ListSelectionListener) new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
+            	
                 if (table.getSelectedRow() > -1) {
+                	if(p.isVisible()) {
+                		p.setVisible(false);
+                	}else {
+                		p.setVisible(true);
+                		piatti.setVisible(false);
+                	}
+                	
+                	
+                	if(piatti.isVisible()) {
+                		piatti.setVisible(false);
+                	}else {
+                		piatti.setVisible(true);
+                		p.setVisible(false);
+                	}
                     // print first column value from selected row
-                    System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());                  
+                    System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
+                    int i = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+                    try {
+                    	p.remove(scroll);
+                    	piatti.remove(scroll);
+						scroll = aggiornaTavoli2(i);
+						piatti.add(scroll);
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 }
             }
         });
         
-        
+        back.addActionListener(new ActionListener() 
+        {
+        	public void actionPerformed(ActionEvent e){
+        		if(piatti.isVisible()) {
+            		piatti.setVisible(false);
+            	}else {
+            		piatti.setVisible(true);
+            		p.setVisible(false);
+            	}
+        		
+        		if(p.isVisible()) {
+            		p.setVisible(false);
+            	}else {
+            		p.setVisible(true);
+            		piatti.setVisible(false);
+            	}
+            	
+            	            	
+        		
+        		try {
+        			piatti.remove(scroll);
+        			p.remove(scroll);
+					scroll = aggiornaTavoli();
+					p.add(scroll);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		
+        	}
+        });
         
         
         exit.addActionListener(new ActionListener()
@@ -96,10 +170,24 @@ public class GUICuoco extends JFrame{
 	
 	
 	private JScrollPane aggiornaTavoli() throws IOException {
-    	String[] colonne = new String[] {"Piatto", "Quantità", "Tavolo"};
-    	//piatti = menu.getItems();
-    	
+    	String[] colonne = new String[] {"Tavolo"};
+ 
     	table = new DynamicJTable(orderHolder, colonne);
+    	table.setShowGrid(false);
+        //table.setEnabled(false);
+        
+    	scroll = new JScrollPane (table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    	scroll.setLocation(0, 0);
+        scroll.setSize(505,150);
+        //scroll.setVisible(true);
+                
+    	return scroll;
+    }
+	
+	private JScrollPane aggiornaTavoli2(int i) throws IOException {
+    	String[] colonne = new String[] {"Piatto", "Quantità"};
+ 
+    	table = new DynamicJTable(orderHolder.getOrder(i), colonne);
     	table.setShowGrid(false);
         //table.setEnabled(false);
         
