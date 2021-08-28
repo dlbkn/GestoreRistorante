@@ -89,6 +89,7 @@ public class GUIRistorante extends JFrame{
     	//if (newFrameValidation()) {
     		this.chef = new GUIChef(res.getMenu());
     		this.chef.setVisible(true);
+    		this.dispose();
     	//}
     }
     private void camButtonActionPerformed(ActionEvent e) throws IOException{
@@ -102,6 +103,7 @@ public class GUIRistorante extends JFrame{
     		//System.out.println(res.getOrderHolder().getOrder(1));
     		this.cuoco = new GUICuoco(res.getOrderHolder());
     		this.cuoco.setVisible(true);
+    		this.dispose();
     	//}
     }
     

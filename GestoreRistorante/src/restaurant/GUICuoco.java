@@ -79,11 +79,13 @@ public class GUICuoco extends JFrame{
         add(p);
      
         add(piatti);
-        
+ 
         table.getSelectionModel().addListSelectionListener((ListSelectionListener) new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
-            	
+            	/*
                 if (table.getSelectedRow() > -1) {
+                	int i = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+                	
                 	if(p.isVisible()) {
                 		p.setVisible(false);
                 	}else {
@@ -94,60 +96,36 @@ public class GUICuoco extends JFrame{
                 	
                 	if(piatti.isVisible()) {
                 		piatti.setVisible(false);
+                		
                 	}else {
-                		piatti.setVisible(true);
                 		p.setVisible(false);
+                		
                 	}
                     // print first column value from selected row
                     System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
-                    int i = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
-                    try {
-                    	p.remove(scroll);
-                    	piatti.remove(scroll);
+                    
+                    piatti.setVisible(true);
+            		p.remove(scroll);
+                	piatti.remove(scroll);
+                	
+					try {
 						scroll = aggiornaTavoli2(i);
-						piatti.add(scroll);
-					} catch (NumberFormatException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-                }
+					
+					piatti.add(scroll);
+                    
+					table.clearSelection();
+					
+                }*/
+            	int i = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+            	tableSelectActionPerformed(event, orderHolder, i);
+            	
             }
         });
         
-        back.addActionListener(new ActionListener() 
-        {
-        	public void actionPerformed(ActionEvent e){
-        		if(piatti.isVisible()) {
-            		piatti.setVisible(false);
-            	}else {
-            		piatti.setVisible(true);
-            		p.setVisible(false);
-            	}
-        		
-        		if(p.isVisible()) {
-            		p.setVisible(false);
-            	}else {
-            		p.setVisible(true);
-            		piatti.setVisible(false);
-            	}
-            	
-            	            	
-        		
-        		try {
-        			piatti.remove(scroll);
-        			p.remove(scroll);
-					scroll = aggiornaTavoli();
-					p.add(scroll);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-        		
-        	}
-        });
         
         
         exit.addActionListener(new ActionListener()
@@ -165,6 +143,8 @@ public class GUICuoco extends JFrame{
 	}
 	
 	private void exitButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
+		GUIRistorante r = new GUIRistorante();
+		r.setVisible(true);
         this.dispose();
         }
 	
@@ -183,19 +163,16 @@ public class GUICuoco extends JFrame{
                 
     	return scroll;
     }
-	
-	private JScrollPane aggiornaTavoli2(int i) throws IOException {
-    	String[] colonne = new String[] {"Piatto", "Quantità"};
- 
-    	table = new DynamicJTable(orderHolder.getOrder(i), colonne);
-    	table.setShowGrid(false);
-        //table.setEnabled(false);
-        
-    	scroll = new JScrollPane (table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    	scroll.setLocation(0, 0);
-        scroll.setSize(505,150);
-        //scroll.setVisible(true);
-                
-    	return scroll;
-    }
+
+	private void tableSelectActionPerformed(ListSelectionEvent e, OrderHolder orderHolder, int i) {
+		try {
+			GUITavoli t = new GUITavoli(orderHolder, i);
+			t.setVisible(true);
+			
+		} catch (IOException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+		this.dispose();
+	}
 }

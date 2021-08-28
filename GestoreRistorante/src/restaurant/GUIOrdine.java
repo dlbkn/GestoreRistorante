@@ -37,7 +37,7 @@ public class GUIOrdine extends JFrame{
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        Container c = this.getContentPane(); 
+        //Container c = this.getContentPane(); 
         JPanel panel = new JPanel();
         
         String[] colonne = new String[] {
@@ -45,7 +45,7 @@ public class GUIOrdine extends JFrame{
             };
         
         JButton exit = new JButton("EXIT");
-        c.add(panel);
+        add(panel);
         exit.setLocation(0,300);
         
         JButton remove = new JButton("REMOVE"); 
@@ -116,7 +116,7 @@ public class GUIOrdine extends JFrame{
             }
         });
         
-        //Manda l'orine al Cuoco, prima però selezionando il tavolo che ha fatto l'ordine
+        //Manda l'ordine al Cuoco, prima però selezionando il tavolo che ha fatto l'ordine
         send.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
