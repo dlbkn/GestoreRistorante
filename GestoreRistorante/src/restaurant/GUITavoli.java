@@ -19,6 +19,7 @@ public class GUITavoli extends JFrame{
 	public OrderHolder orderHolder;
 	public int i;
 	public JPanel piatti;
+	
 	public GUITavoli(OrderHolder orderHolder, int i) throws IOException {
 		this.orderHolder = orderHolder;
 		this.i = i;
@@ -27,7 +28,7 @@ public class GUITavoli extends JFrame{
 	}
 	
 	private void init() {
-		setTitle("ORDINE");
+		setTitle("Table "+ i);
         setSize(420, 310);
         setLocationRelativeTo(null);
         setResizable(false);

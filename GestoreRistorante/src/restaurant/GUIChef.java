@@ -153,8 +153,8 @@ public class GUIChef extends JFrame{
     }
     
     private void exitButtonActionPerformed(ActionEvent e) throws IOException{
-    	// GUIRistorante r = new GUIRistorante();
-        // r.setVisible(true);
+    	GUIRistorante r = new GUIRistorante();
+        r.setVisible(true);
         this.dispose();
     }
     
