@@ -76,7 +76,7 @@ public class GUICuoco extends JFrame{
         table.getSelectionModel().addListSelectionListener((ListSelectionListener) new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
             	int i = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
-            	payments.addPayment(i, Double.parseDouble(table.getValueAt(table.getSelectedRow(), 1).toString()));
+            	
             	tableSelectActionPerformed(event, orderHolder, i);
             	
             }
@@ -99,8 +99,8 @@ public class GUICuoco extends JFrame{
 	}
 	
 	private void exitButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
-		GUIRistorante r = new GUIRistorante();
-		r.setVisible(true);
+		//GUIRistorante r = new GUIRistorante();
+		//r.setVisible(true);
         this.dispose();
         }
 	

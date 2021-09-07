@@ -14,10 +14,10 @@ public class GUICassa extends JFrame{
 	PaymentHolder payments;
 	DynamicJTable table;
 	public JScrollPane scroll;
-	
+	public JPanel p;
 	public GUICassa(PaymentHolder payments) throws IOException {
 		this.payments = payments;
-		this.scroll = this.aggiornaTavoli();
+		this.scroll = this.aggiornaPagamenti();
 		init();
 	}
 	private void init() {
@@ -29,8 +29,8 @@ public class GUICassa extends JFrame{
         
         
         JButton exit = new JButton("EXIT");
-        
-        JPanel p = new JPanel();
+        JButton remove = new JButton("REMOVE"); 
+        p = new JPanel();
         
         p.setSize(420, 310);
         p.setLayout(null);
@@ -40,10 +40,26 @@ public class GUICassa extends JFrame{
         Dimension size = exit.getPreferredSize();
         
         exit.setBounds(10, 235, size.width, size.height);
+        remove.setBounds(110, 235, 90, size.height);
         
         add(p);
         p.add(exit);
+        p.add(remove);
         p.add(scroll);
+        
+        
+        remove.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e){            	
+                try {
+					removeButtonActionPerformed(e);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
+        }); 
+        
         exit.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){            	
@@ -59,12 +75,21 @@ public class GUICassa extends JFrame{
 	}
 	
 	private void exitButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
-		GUIRistorante r = new GUIRistorante();
-		r.setVisible(true);
         this.dispose();
     }
 	
-	private JScrollPane aggiornaTavoli() throws IOException {
+	private void removeButtonActionPerformed(ActionEvent e) throws IOException {
+		try {
+			payments.removePayment(Integer.parseInt(table.getSelectedKey().toString()));
+			p.remove(scroll);
+			scroll = aggiornaPagamenti();
+			p.add(scroll);
+		} catch (Exception e2) {
+			System.out.println(e);
+		}
+	}
+	
+	private JScrollPane aggiornaPagamenti() throws IOException {
     	String[] colonne = new String[] {"Tavolo", "Prezzo"};
  
     	table = new DynamicJTable(payments, colonne);
