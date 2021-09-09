@@ -1,4 +1,7 @@
-package restaurant;
+package GUI;
+
+import restaurant.OrderHolder;
+import restaurant.PaymentHolder;
 
 import java.awt.*;
 import java.awt.event.*;

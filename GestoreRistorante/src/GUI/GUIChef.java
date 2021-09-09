@@ -1,4 +1,6 @@
-package restaurant;
+package GUI;
+
+import restaurant.Menu;
 
 import java.awt.*;
 import java.awt.event.*;

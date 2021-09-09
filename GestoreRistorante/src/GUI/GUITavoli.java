@@ -1,4 +1,6 @@
-package restaurant;
+package GUI;
+
+import restaurant.OrderHolder;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
