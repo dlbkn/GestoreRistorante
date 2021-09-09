@@ -17,7 +17,7 @@ public class GUIRistorante extends JFrame{
 	public GUICassa cassa;
 	
 	public GUIRistorante() throws IOException{
-		this.res = new Restaurant("menu.txt");
+		this.res = new Restaurant("menu.txt", "resources/");
         init();
     }
     private void init(){
@@ -114,7 +114,7 @@ public class GUIRistorante extends JFrame{
     		//System.out.println(res.getOrderHolder().getOrder(1));
     		this.cuoco = new GUICuoco(res.getOrderHolder());
     		this.cuoco.setVisible(true);
-    		//this.dispose();
+    		this.dispose();
     	//}
     }
     private void cassButtonActionPerformed(ActionEvent e) throws IOException{
@@ -122,7 +122,7 @@ public class GUIRistorante extends JFrame{
     		//System.out.println(res.getOrderHolder().getOrder(1));
     		this.cassa = new GUICassa(res.getPaymentHolder());
     		this.cassa.setVisible(true);
-    		//this.dispose();
+    		this.dispose();
     	//}
     }
     

@@ -7,7 +7,9 @@ public class OpenOrder extends Order implements Bidimensional, Priceable {
 	// reference to the restaurant Menu
 	private Menu menu;
 	// reference to the restaurant OrderHolder
-	private OrderHolder holder;
+	private OrderHolder holderOrder;
+	// reference to the restaurant PaymentHolder
+	private PaymentHolder holderPayment;
 	
 	
 	/**
@@ -15,10 +17,11 @@ public class OpenOrder extends Order implements Bidimensional, Priceable {
 	 * @param menu the menu for the restaurant
 	 * @param holder the order holder for the restaurant
 	 */
-	public OpenOrder(Menu menu, OrderHolder holder) {
+	public OpenOrder(Menu menu, OrderHolder holder1, PaymentHolder holder2) {
 		super(new HashMap<String, Integer>(), 0.0);
 		this.menu = menu;
-		this.holder = holder;
+		this.holderOrder = holder1;
+		this.holderPayment = holder2; 
 	}
 	
 	/**
@@ -65,7 +68,11 @@ public class OpenOrder extends Order implements Bidimensional, Priceable {
 		if (super.getRows() == 0) {
 			throw new IllegalArgumentException("No items in the order");
 		}
-		holder.addOrder(new ClosedOrder(super.getOrderMap(), super.getPrice()),table);
+		// adding order for chef
+		holderOrder.addOrder(new ClosedOrder(super.getOrderMap(), super.getPrice()),table);
+		// addind order for cashier
+		this.holderPayment.addPayment(table, super.getPrice());
+		// clearing for next order
 		this.clear();
 	}
 	

@@ -12,15 +12,15 @@ public class OrderHolder implements Bidimensional {
 	// stores the set of completed and unpaid orders
 	private HashMap<Integer, ClosedOrder> orderMap;
 	// reference to the restaurant PaymentHolder
-	private PaymentHolder thePayments;
+	// private PaymentHolder thePayments;
 	
 	/**
 	 * Constructs a new OrderHolder object
 	 * @param thePayments the payment holder for the current restaurant session
 	 */
-	public OrderHolder(PaymentHolder thePayments) {
+	public OrderHolder() {
 		this.orderMap = new HashMap<Integer, ClosedOrder>();
-		this.thePayments = thePayments;
+		// this.thePayments = thePayments;
 	}
 	
 	/**
@@ -82,8 +82,8 @@ public class OrderHolder implements Bidimensional {
 		this.orderMap.get(table).serveItem(name);
 		// checks if order is complete
 		if (this.orderMap.get(table).getRows() == 0) {
-			double price = this.getOrder(table).getPrice();
-			this.thePayments.addPayment(table, price);
+			// double price = this.getOrder(table).getPrice();
+			// this.thePayments.addPayment(table, price);
 			this.orderMap.remove(table);
 		}
 	}

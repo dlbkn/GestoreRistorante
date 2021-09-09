@@ -14,9 +14,9 @@ public static void main(String[] args) throws IOException {
 		
 		// creation of new OrderHolder
 		Menu menu = new Menu("resources/menu");
-		PaymentHolder payments = new PaymentHolder();
-		OrderHolder holderTest = new OrderHolder(payments);
-		OpenOrder creator = new OpenOrder(menu, holderTest);
+		PaymentHolder payments = new PaymentHolder("resources/");
+		OrderHolder holderTest = new OrderHolder();
+		OpenOrder creator = new OpenOrder(menu, holderTest, payments);
 		
 		// testing addition of items
 		System.out.println("Expecting:");

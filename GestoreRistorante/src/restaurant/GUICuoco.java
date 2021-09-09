@@ -22,7 +22,6 @@ public class GUICuoco extends JFrame{
 	public GUICuoco(OrderHolder orderHolder) throws IOException {
 		this.orderHolder = orderHolder;
 		this.scroll = this.aggiornaTavoli();
-		this.payments = new PaymentHolder();
 		init();
 	}
 
