@@ -52,7 +52,7 @@ public class Order implements Bidimensional, Priceable {
 	/**
 	 * Clears all attributes and resets the order
 	 */
-	protected HashMap<String, Integer> getOrderMap() {
+	public HashMap<String, Integer> getOrderMap() {
 		return this.orderMap;
 	}
 	

@@ -1,4 +1,6 @@
-package restaurant;
+package GUI;
+
+import restaurant.PaymentHolder;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -83,6 +85,7 @@ public class GUICassa extends JFrame{
 			payments.removePayment(Integer.parseInt(table.getSelectedKey().toString()));
 			p.remove(scroll);
 			scroll = aggiornaPagamenti();
+			JOptionPane.showMessageDialog(null, "Elaborazione Scontrino");
 			p.add(scroll);
 		} catch (Exception e2) {
 			System.out.println(e);
