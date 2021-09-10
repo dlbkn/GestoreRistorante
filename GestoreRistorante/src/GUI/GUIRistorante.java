@@ -19,7 +19,7 @@ public class GUIRistorante extends JFrame{
 	public GUICassa cassa;
 	
 	public GUIRistorante() throws IOException{
-		this.res = new Restaurant("menu.txt");
+		this.res = new Restaurant("menu.txt","rescources/");
         init();
     }
     private void init(){

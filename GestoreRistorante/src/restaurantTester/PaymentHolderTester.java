@@ -1,13 +1,15 @@
 package restaurantTester;
 
+import java.io.IOException;
+
 import restaurant.PaymentHolder;
 
 public class PaymentHolderTester {
 	
-public static void main(String[] args) {
+public static void main(String[] args) throws IOException {
 		
 		// testing creation of menu from file
-		PaymentHolder payTest = new PaymentHolder();
+		PaymentHolder payTest = new PaymentHolder("resources/");
 		
 		// testing addition of payments
 		System.out.println("Expecting:");

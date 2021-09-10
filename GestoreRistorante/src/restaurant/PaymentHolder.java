@@ -1,6 +1,10 @@
 package restaurant;
 
 import java.util.HashMap;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * This class is a tool for storing and paying any completed order
@@ -11,12 +15,18 @@ public class PaymentHolder implements Bidimensional {
 	
 		// stores the set of completed and unpaid orders
 		private HashMap<Integer, Double> paymentMap;
+		// stores the path to receipt folder
+		private String path;
+		// keeps count of receipts
+		private int payCount;
 		
 		/**
 		 * Constructs a new PaymentHolder object
 		 */
-		public PaymentHolder() {
+		public PaymentHolder(String path) {
 			this.paymentMap = new HashMap<Integer, Double>();
+			this.path = path;
+			this.payCount = 1;
 		}
 		
 		/**
@@ -82,9 +92,25 @@ public class PaymentHolder implements Bidimensional {
 		 * Removes a payment from the payments set (FOR PAYING)
 		 * @param table the id number of the table in the payments set 
 		 */
-		public void removePayment(int table) {
+		public void removePayment(int table) throws IOException {
 			if (!this.paymentMap.containsKey(table)) {
 				throw new IllegalArgumentException("This table has no outsanding payments");
+			}
+			// printing receipt 
+			String curPath = (this.path + this.payCount);
+			File file = new File(curPath);
+			// trying to open file
+			try {
+				// in case file exits
+				PrintWriter writer = new PrintWriter(file);
+				writer.write("RICEVUTA\n\n");
+				writer.write("Tavolo: " + table + "\n");
+				writer.write("Prezzo: " + this.getPayment(table) + "\n");
+				writer.close();
+			}
+			catch (FileNotFoundException e) {
+				// in case does not exist
+			    e.printStackTrace();
 			}
 			this.paymentMap.remove(table);
 		}

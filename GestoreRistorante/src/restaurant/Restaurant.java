@@ -25,11 +25,11 @@ public class Restaurant {
 	 * @param pathToMenu the path to the menu
 	 * @throws IOException 
 	 */
-	public Restaurant(String pathToMenu) throws IOException {
+	public Restaurant(String pathToMenu, String pathToReceipts) throws IOException {
 		this.menu = new Menu(pathToMenu);
-		this.payments = new PaymentHolder();
-		this.orders = new OrderHolder(this.payments);
-		this.creator = new OpenOrder(menu, orders);
+		this.payments = new PaymentHolder(pathToReceipts);
+		this.orders = new OrderHolder();
+		this.creator = new OpenOrder(menu, orders, payments);
 	}
 
 	/**

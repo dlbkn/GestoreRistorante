@@ -23,7 +23,7 @@ public static void main(String[] args) throws IOException {
 		
 		String[] names = {"food","price"};
 		
-		Restaurant food = new Restaurant("resources/menu");
+		Restaurant food = new Restaurant("resources/menu","resources/");
 		
 		JFrame frame = new JFrame();
 		

@@ -14,8 +14,9 @@ public static void main(String[] args) throws IOException {
 		
 		// creation of new OpenOrder
 		Menu menu = new Menu("resources/menu");
-		OrderHolder holder = new OrderHolder(new PaymentHolder());
-		OpenOrder creatorTest = new OpenOrder(menu, holder);
+		OrderHolder holder1 = new OrderHolder();
+		PaymentHolder holder2 = new PaymentHolder("resources/");
+		OpenOrder creatorTest = new OpenOrder(menu, holder1, holder2);
 		
 		// testing addition of items
 		System.out.println("Expecting:");
@@ -50,7 +51,8 @@ public static void main(String[] args) throws IOException {
 		System.out.println("water, 1");
 		System.out.println("Result:");
 		creatorTest.sendOrder(1);
-		TesterTools.matrixPrinter(holder.getOrder(1).getItems());
+		TesterTools.matrixPrinter(holder1.getOrder(1).getItems());
+		System.out.println(holder2.getPayment(1));
 		System.out.println();
 		
 		
