@@ -73,7 +73,7 @@ public class GUIChef extends JFrame{
         table.setShowGrid(false);
         
         JPanel padd = aggiungiPiatto();
-        JPanel pdel = rimuoviPiatto();
+        //JPanel pdel = rimuoviPiatto();
         JPanel pedit = modificaPiatto();
        
         //c.add(padd);
@@ -83,15 +83,15 @@ public class GUIChef extends JFrame{
         add(p);
         add(pview);
         add(padd);
-        add(pdel);
+        //add(pdel);
         add(pedit);
         
         
         padd.setSize(420, 400);
         padd.setBackground(Color.yellow);//Da cambiare/eliminare
         
-        pdel.setSize(420, 400);
-        pdel.setBackground(Color.black);//Da cambiare/eliminare
+        //pdel.setSize(420, 400);
+        //pdel.setBackground(Color.black);//Da cambiare/eliminare
         
         pedit.setSize(420, 400);
         pedit.setBackground(Color.green);//Da cambiare/eliminare
@@ -105,7 +105,7 @@ public class GUIChef extends JFrame{
                     padd.setVisible(false);
                     
                 }else{
-                	pdel.setVisible(false);
+                	//pdel.setVisible(false);
                 	pedit.setVisible(false);
                     padd.setVisible(true);
                 }
@@ -114,7 +114,7 @@ public class GUIChef extends JFrame{
         
         del.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-            	
+            	/*
             	if(pdel.isVisible()){
                     pdel.setVisible(false);
                     
@@ -122,7 +122,26 @@ public class GUIChef extends JFrame{
                 	padd.setVisible(false);
                 	pedit.setVisible(false);
                     pdel.setVisible(true);
-                }
+                
+                }*/
+            	if(table.getSelectedRow() != -1) {
+            		int reply = JOptionPane.showConfirmDialog(null, "Eliminare questo piatto?", "Conferma", JOptionPane.YES_NO_OPTION);
+	            	if (reply == JOptionPane.YES_OPTION) {
+	            		try {
+	    					removeButtonActionPerformed(e);
+	    					JOptionPane.showMessageDialog(null, "Piatto eliminato");
+	    				} catch (IOException e1) {
+	    					// TODO Auto-generated catch block
+	    					JOptionPane.showMessageDialog(null, "Selezionare il piatto");
+	    				}
+	            	} else {
+	            	    JOptionPane.showMessageDialog(null, "Piatto non eliminato");
+	            	    //System.exit(0);
+	            	}
+            	}
+            	
+            	
+            	
             }                
         });
         
@@ -134,7 +153,7 @@ public class GUIChef extends JFrame{
                     
                 }else{
                 	padd.setVisible(false);
-                	pdel.setVisible(false);
+                	//pdel.setVisible(false);
                     pedit.setVisible(true);
                 }
             }                
@@ -154,11 +173,7 @@ public class GUIChef extends JFrame{
   
     }
     
-    private void exitButtonActionPerformed(ActionEvent e) throws IOException{
-    	GUIRistorante r = new GUIRistorante();
-        r.setVisible(true);
-        this.dispose();
-    }
+    
     
     private JPanel aggiungiPiatto() {
     	JPanel jp = new JPanel();
@@ -251,11 +266,11 @@ public class GUIChef extends JFrame{
                
         return jp;
     }
-    
+    /*
     private JPanel rimuoviPiatto() {
     	JPanel jpr = new JPanel();
     	JButton rimuovi = new JButton("RIMUOVI");
-    	
+    	/*
     	JTextField piattoRemover = new JTextField("Piatto da rimuovere");
     	piattoRemover.setForeground(new Color(153,153,153));
     	
@@ -283,14 +298,14 @@ public class GUIChef extends JFrame{
 				}
 			}
         	
-        });
+        //});
     	
     	rimuovi.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
             	
             	try {
-					removeButtonActionPerformed(e, piattoRemover);
+					removeButtonActionPerformed(e);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -298,18 +313,18 @@ public class GUIChef extends JFrame{
             }
         });
     	
-    	piattoRemover.setLocation(146, 200);
-    	piattoRemover.setSize(120, 20);
+    	//piattoRemover.setLocation(146, 200);
+    	//piattoRemover.setSize(120, 20);
     	rimuovi.setBounds(270, 200, 90, 20);
     	
     	jpr.setLayout(null);
-        jpr.add(piattoRemover);
+        //jpr.add(piattoRemover);
         jpr.add(rimuovi);
         jpr.setVisible(false);
     	
     	return jpr;
     }
-    
+    */
     private JPanel modificaPiatto() {
     	JPanel jpm = new JPanel();
     	JButton edit = new JButton("EDIT");
@@ -404,45 +419,109 @@ public class GUIChef extends JFrame{
     	return jpm;
     }
     
+    
+    
     private void saveButtonActionPerformed(ActionEvent e, JTextField nomePiattoField, JTextField prezzoPiattoField) throws IOException{
-    	menu.addItem(nomePiattoField.getText(), Double.parseDouble(prezzoPiattoField.getText()));
-        System.out.print(nomePiattoField.getText() + Double.parseDouble(prezzoPiattoField.getText()));
-        menu.WriteToFile();                
-        
-        pview.remove(scroll);            
-        scroll = aggiornaMenu();
-        pview.add(scroll);
-        
-        nomePiattoField.setText("Nome Piatto");
-        nomePiattoField.setForeground(Color.GRAY);
-        
-        prezzoPiattoField.setText("Prezzo Piatto");
-        prezzoPiattoField.setForeground(Color.GRAY);
+    	
+    	if(!isAlpha(nomePiattoField.getText())) {
+    		
+    		JOptionPane.showMessageDialog(null, "Usare solo lettere");
+    		
+    		nomePiattoField.setText("Nome Piatto");
+	        nomePiattoField.setForeground(Color.GRAY);
+	        
+	        prezzoPiattoField.setText("Prezzo Piatto");
+	        prezzoPiattoField.setForeground(Color.GRAY);
+	        
+    	}else if (!isDigit(prezzoPiattoField.getText())){
+    
+    		JOptionPane.showMessageDialog(null, "Usare solo numeri");
+    		
+    		nomePiattoField.setText("Nome Piatto");
+	        nomePiattoField.setForeground(Color.GRAY);
+	        
+	        prezzoPiattoField.setText("Prezzo Piatto");
+	        prezzoPiattoField.setForeground(Color.GRAY);
+	        
+    	}else {
+    	
+    		menu.addItem(nomePiattoField.getText(), Double.parseDouble(prezzoPiattoField.getText()));
+	        System.out.print(nomePiattoField.getText() + Double.parseDouble(prezzoPiattoField.getText()));
+	        menu.WriteToFile();                
+	        
+	        pview.remove(scroll);            
+	        scroll = aggiornaMenu();
+	        pview.add(scroll);
+	        
+	        nomePiattoField.setText("Nome Piatto");
+	        nomePiattoField.setForeground(Color.GRAY);
+	        
+	        prezzoPiattoField.setText("Prezzo Piatto");
+	        prezzoPiattoField.setForeground(Color.GRAY);
+    	}    	
     }
   
-    private void removeButtonActionPerformed(ActionEvent e, JTextField piattoRemover) throws IOException {
-    	menu.removeItem(piattoRemover.getText());
+    private void removeButtonActionPerformed(ActionEvent e) throws IOException {
+    	menu.removeItem(table.getSelectedKey().toString());
     	menu.WriteToFile();
     	pview.remove(scroll);            
         scroll = aggiornaMenu();
         pview.add(scroll);
         
-        piattoRemover.setText("Piatto da rimuovere");
-		piattoRemover.setForeground(Color.GRAY);
+        //piattoRemover.setText("Piatto da rimuovere");
+		//piattoRemover.setForeground(Color.GRAY);
     }
     
     private void editButtonActionPerformed(ActionEvent e, JTextField piatto, JTextField nuovoPrezzo) throws IOException {
-    	menu.replaceItem(piatto.getText(), Double.parseDouble(nuovoPrezzo.getText()));
-    	menu.WriteToFile();
-    	pview.remove(scroll);            
-        scroll = aggiornaMenu();
-        pview.add(scroll);
     	
-        piatto.setText("Piatto");
-		piatto.setForeground(Color.GRAY);
-        
-        nuovoPrezzo.setText("Nuovo prezzo");
-		nuovoPrezzo.setForeground(Color.GRAY);
+    	if(!isAlpha(piatto.getText())) {
+    		
+    		JOptionPane.showMessageDialog(null, "Usare solo lettere");
+    		
+    		piatto.setText("Piatto");
+    		piatto.setForeground(Color.GRAY);
+            
+            nuovoPrezzo.setText("Nuovo prezzo");
+    		nuovoPrezzo.setForeground(Color.GRAY);
+	        
+    	}else if (!isDigit(nuovoPrezzo.getText())){
+    
+    		JOptionPane.showMessageDialog(null, "Usare solo numeri");
+    		
+    		piatto.setText("Piatto");
+    		piatto.setForeground(Color.GRAY);
+            
+            nuovoPrezzo.setText("Nuovo prezzo");
+    		nuovoPrezzo.setForeground(Color.GRAY);
+	        
+    	}else {
+    
+    		menu.replaceItem(piatto.getText(), Double.parseDouble(nuovoPrezzo.getText()));
+	    	menu.WriteToFile();
+	    	pview.remove(scroll);            
+	        scroll = aggiornaMenu();
+	        pview.add(scroll);
+	    	
+	        piatto.setText("Piatto");
+			piatto.setForeground(Color.GRAY);
+	        
+	        nuovoPrezzo.setText("Nuovo prezzo");
+			nuovoPrezzo.setForeground(Color.GRAY);
+    	}
+    }
+    
+    private void exitButtonActionPerformed(ActionEvent e) throws IOException{
+    	GUIRistorante r = new GUIRistorante();
+        r.setVisible(true);
+        this.dispose();
+    }
+    
+    public boolean isAlpha(String name) {
+        return name.matches("[a-zA-Z]+");
+    }
+    
+    public boolean isDigit(String valore) {
+    	return valore.matches("[0-9]+");
     }
     
     private JScrollPane aggiornaMenu() throws IOException {
@@ -460,4 +539,6 @@ public class GUIChef extends JFrame{
                 
     	return scroll;
     }
+    
+    
 }
