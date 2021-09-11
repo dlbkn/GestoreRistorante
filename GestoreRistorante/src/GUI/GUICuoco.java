@@ -38,23 +38,16 @@ public class GUICuoco extends JFrame{
         // Creation of panel
         //Creazione del panel
         JPanel p = new JPanel();
-        
-        
+             
         p.setSize(420, 310);
         p.setLayout(null);
-        
        
         JButton exit = new JButton("EXIT");
-        JButton invio = new JButton("INVIO");
         
- 
-        Dimension size = invio.getPreferredSize();
+        Dimension size = exit.getPreferredSize();
         
         exit.setBounds(10, 235, size.width, size.height);
-        invio.setBounds(330, 235, size.width, size.height);
-        
-
-        
+                
         //DynamicJTable table = new DynamicJTable(orderHolder,colonne);
         //add(scroll);
         scroll.setLocation(0, 0);
@@ -69,7 +62,6 @@ public class GUICuoco extends JFrame{
         table.getColumnModel().getColumn(0).setCellRenderer(rendar); 
         
         p.add(exit);
-        p.add(invio);
         p.add(scroll);
         p.setBackground(Color.white);//Da cambiare/eliminare
 
@@ -83,8 +75,6 @@ public class GUICuoco extends JFrame{
             	
             }
         });
-        
-        
         
         exit.addActionListener(new ActionListener()
         {

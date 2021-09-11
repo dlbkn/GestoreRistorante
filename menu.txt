@@ -1,2 +1,3 @@
-e,4.0
-E,3.0
+Pizza,5.5
+Burger,6.5
+Acqua,4.5

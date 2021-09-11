@@ -5,9 +5,6 @@ import restaurant.Menu;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.*;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
@@ -325,6 +322,7 @@ public class GUIChef extends JFrame{
     	return jpr;
     }
     */
+    
     private JPanel modificaPiatto() {
     	JPanel jpm = new JPanel();
     	JButton edit = new JButton("EDIT");
@@ -393,13 +391,18 @@ public class GUIChef extends JFrame{
             	
             	try {
 					editButtonActionPerformed(e, piatto, nuovoPrezzo);
-				} catch (IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Piatto non esistente");
+					
+					piatto.setText("Piatto");
+		    		piatto.setForeground(Color.GRAY);
+		            
+		            nuovoPrezzo.setText("Nuovo prezzo");
+		    		nuovoPrezzo.setForeground(Color.GRAY);
 				}
             }
         });
-    	
     	
     	piatto.setLocation(146, 185);
     	nuovoPrezzo.setLocation(146, 215);
@@ -419,8 +422,6 @@ public class GUIChef extends JFrame{
     	return jpm;
     }
     
-    
-    
     private void saveButtonActionPerformed(ActionEvent e, JTextField nomePiattoField, JTextField prezzoPiattoField) throws IOException{
     	
     	if(!isAlpha(nomePiattoField.getText())) {
@@ -435,10 +436,10 @@ public class GUIChef extends JFrame{
 	        
     	}else if (!isDigit(prezzoPiattoField.getText())){
     
-    		JOptionPane.showMessageDialog(null, "Usare solo numeri");
+    		JOptionPane.showMessageDialog(null, "Usare solo numeri e virgola");
     		
-    		nomePiattoField.setText("Nome Piatto");
-	        nomePiattoField.setForeground(Color.GRAY);
+    		//nomePiattoField.setText("Nome Piatto");
+	        //nomePiattoField.setForeground(Color.GRAY);
 	        
 	        prezzoPiattoField.setText("Prezzo Piatto");
 	        prezzoPiattoField.setForeground(Color.GRAY);
@@ -486,7 +487,7 @@ public class GUIChef extends JFrame{
 	        
     	}else if (!isDigit(nuovoPrezzo.getText())){
     
-    		JOptionPane.showMessageDialog(null, "Usare solo numeri");
+    		JOptionPane.showMessageDialog(null, "Usare solo numeri e virgola");
     		
     		piatto.setText("Piatto");
     		piatto.setForeground(Color.GRAY);
@@ -516,14 +517,6 @@ public class GUIChef extends JFrame{
         this.dispose();
     }
     
-    public boolean isAlpha(String name) {
-        return name.matches("[a-zA-Z]+");
-    }
-    
-    public boolean isDigit(String valore) {
-    	return valore.matches("[0-9]+");
-    }
-    
     private JScrollPane aggiornaMenu() throws IOException {
     	String[] colonne = new String[] {"Piatto", "Prezzo ($)"};
     	//piatti = menu.getItems();
@@ -540,5 +533,11 @@ public class GUIChef extends JFrame{
     	return scroll;
     }
     
+    public boolean isAlpha(String name) {
+        return name.matches("[a-zA-Z]+");
+    }
     
+    public boolean isDigit(String valore) {
+    	return valore.matches("[0-9.]+");
+    }
 }

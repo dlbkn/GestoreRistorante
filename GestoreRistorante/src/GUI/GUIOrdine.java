@@ -42,7 +42,7 @@ public class GUIOrdine extends JFrame{
         JPanel panel = new JPanel();
         
         String[] colonne = new String[] {
-                "piatto", "quantità"
+                "Piatto", "Quantit�"
             };
         
         JButton exit = new JButton("EXIT");
@@ -73,38 +73,84 @@ public class GUIOrdine extends JFrame{
         panel.add(send);
         panel.add(exit);
         
+      //Manda l'ordine al Cuoco, prima però selezionando il tavolo che ha fatto l'ordine
+        send.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e){
+            	if(!openOrder.empty()) {
+            		//creazione panel per immettere il numero del tavolo
+            		JPanel panelSend = new JPanel();
+	                JTextField num = new JTextField(3);
+	                panelSend.add(num);
+	            	Object[] options = { "Invio",
+	                "Quit" };  
+	                int result = JOptionPane.showOptionDialog(null, panelSend, "Selezionare il tavolo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+	                        null, options, null);
+	                
+	                if(result == JOptionPane.OK_OPTION) {
+						try{
+							Integer.parseInt(num.getText());
+							openOrder.sendOrder(Integer.parseInt(num.getText()));
+							exitButtonActionPerformed(e);
+						}catch (NumberFormatException nfe) {
+							JOptionPane.showMessageDialog(null, "Selezionare solo numeri");
+						}catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}catch (IOException e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null, "Inserire quantit�");
+						}  
+	                }
+	                //prova a convertire la stringa in intero
+	                
+            	}
+            		
+            }
+        });
+        
         // Rimuove una determinata quantità di un piatto ordinato
         remove.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
-            	int riga = table.getSelectedRow();
+            	if(!openOrder.empty()) {
+            		int riga = table.getSelectedRow();
 
-            	//Controllo se è stata selezionata una riga dalla tabella, se non è stata
-            	//selezionata allora darà una schermata di errore.
-            	if (riga >= 0) {
-            		
-            		//creazione panel per immettere la quantità da togliere
-                    JPanel panel = new JPanel();
-                    JTextField num = new JTextField(3);
-                    panel.add(num);
-                    
-                    Object[] options1 = { "Invio",
-                    "Quit" };                                                         
-                    int num1 = JOptionPane.showOptionDialog(null,panel, "Quantità da eliminare", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
-                            null, options1, null);
-                    //prova a convertire la stringa in intero
-                    try{
-                        Integer.parseInt(num.getText());
-                        openOrder.removeItem((String)table.getModel().getValueAt(riga, 0),Integer.parseInt(num.getText()));
-                        table.display();
-                        
-                     } catch (NumberFormatException nfe) {
-                    	 JOptionPane.showMessageDialog(null, "Selezionare solo numeri");
-                     }  
-                
-                } else {                	
-                    JOptionPane.showMessageDialog(null, "Nessuna riga selezionata");
-                }
+	            	//Controllo se è stata selezionata una riga dalla tabella, se non è stata
+	            	//selezionata allora darà una schermata di errore.
+	            	if (riga >= 0) {
+	            		
+	            		//creazione panel per immettere la quantità da togliere
+	                    JPanel panel = new JPanel();
+	                    JTextField num = new JTextField(3);
+	                    panel.add(num);
+	                    
+	                    Object[] options = { "Invio",
+	                    "Quit" };                                                         
+	                    int result = JOptionPane.showOptionDialog(null,panel, "Quantit� da eliminare", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+	                            null, options, null);
+	                    //prova a convertire la stringa in intero
+	                    if(result == JOptionPane.OK_OPTION) {
+	                    	try{
+		                        Integer.parseInt(num.getText());
+		                        openOrder.removeItem((String)table.getModel().getValueAt(riga, 0),Integer.parseInt(num.getText()));
+		                        table.display();
+		                    }catch (NumberFormatException nfe) {
+		                    	JOptionPane.showMessageDialog(null, "Selezionare solo numeri");
+		                    }
+	                    }
+	                     
+	                }else{                	
+	                    JOptionPane.showMessageDialog(null, "Nessuna riga selezionata");
+	                }
+            	}else {
+            		try {
+    					exitButtonActionPerformed(e);
+    				} catch (IOException e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				}
+            	}
             }
         });
         
@@ -112,43 +158,19 @@ public class GUIOrdine extends JFrame{
         clear.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
-					openOrder.clear();
-					table.display();	
+				openOrder.clear();
+				table.display();
+				if(openOrder.empty()) {
+            		try {
+    					exitButtonActionPerformed(e);
+    				} catch (IOException e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				}
+				}
             }
         });
         
-        //Manda l'ordine al Cuoco, prima però selezionando il tavolo che ha fatto l'ordine
-        send.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e){
-            	
-            	//creazione panel per immettere il numero del tavolo
-            	JPanel panelSend = new JPanel();
-                JTextField num = new JTextField(3);
-                panelSend.add(num);
-            	Object[] options2 = { "Invio",
-                "Quit" };                                                         
-                int tavolo = JOptionPane.showOptionDialog(null,panelSend, "Selezionare il tavolo", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
-                        null, options2, null);
-                
-                //prova a convertire la stringa in intero
-                try{
-                    Integer.parseInt(num.getText());
-                    openOrder.sendOrder(Integer.parseInt(num.getText()));
-					exitButtonActionPerformed(e);
-                 } catch (NumberFormatException nfe) {
-                	 JOptionPane.showMessageDialog(null, "Selezionare solo numeri");
-                 } catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}  
-            	
-            	
-            }
-        });
         
         //Torna alla schermata del cameriere
         exit.addActionListener(new ActionListener()

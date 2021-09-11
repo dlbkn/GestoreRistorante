@@ -24,6 +24,14 @@ public class OpenOrder extends Order implements Bidimensional, Priceable {
 		this.holderPayment = holder2; 
 	}
 	
+	public boolean empty() {
+		if(super.getRows() == 0) {
+			return true;
+		}
+		return false;
+		
+	}
+	
 	/**
 	 * Adds a given quantity of an item to the order
 	 * @param name the name of an item in the menu

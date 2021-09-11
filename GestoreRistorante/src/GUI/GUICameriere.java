@@ -137,9 +137,14 @@ public class GUICameriere extends JFrame{
     
     //Action Performed per aggiornare il frame e andare al pannello dell'ordine
     private void ordineButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
-    	GUIOrdine r = new GUIOrdine(openOrder);
-        r.setVisible(true);
-        this.dispose();
+    	if(!openOrder.empty()) {
+    		GUIOrdine r = new GUIOrdine(openOrder);
+	        r.setVisible(true);
+	        this.dispose();
+    	}else {
+    		JOptionPane.showMessageDialog(null, "Ordini non presenti");
+    	}
+    	
     }
     
     //Metodo per creare i bottoni per l'ordinazione di un determinato piatto
@@ -175,14 +180,25 @@ public class GUICameriere extends JFrame{
             {
                 public void actionPerformed(ActionEvent e){
                 	String val = text.getText();
-                	int num = Integer.parseInt(val);
-                	openOrder.addItem(nome,num); 
-                	System.out.println(openOrder.getOrderMap());
-                	text.setText("");
+                	if(isDigit(val)) {
+                		int num = Integer.parseInt(val);
+                		openOrder.addItem(nome,num); 
+                		System.out.println(openOrder.getOrderMap());
+                		text.setText("");
+                	}else {
+                		JOptionPane.showMessageDialog(null, "Usare solo numeri");
+                	}
+                	
                 }
             });
             
         }
         return jp;
+    }
+    public boolean isAlpha(String name) {
+        return name.matches("[a-zA-Z]+");
+    }
+    public boolean isDigit(String valore) {
+    	return valore.matches("[0-9.]+");
     }
 }
