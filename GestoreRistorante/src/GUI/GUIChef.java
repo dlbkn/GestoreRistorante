@@ -12,16 +12,16 @@ import application.DynamicJTable;
 
 public class GUIChef extends JFrame{
 	
-	Menu menu;
+	private Menu menu;
 	
-	DynamicJTable table;
-	JScrollPane scroll;
-	JPanel pview = new JPanel();
+	private DynamicJTable table;
+	private JScrollPane scroll;
+	private JPanel menuPanel = new JPanel();
 	
 	public GUIChef(Menu menu) throws FileNotFoundException, IOException{
 		super();
 		this.menu = menu;
-		this.scroll = this.aggiornaMenu();
+		this.scroll = this.reloadMenu();
         init();         
     }
 	
@@ -35,33 +35,33 @@ public class GUIChef extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
-        JPanel p = new JPanel();
+        JPanel buttonPanel = new JPanel();
         
-        JButton add = new JButton("AGGIUNGI");
-        JButton del = new JButton("ELIMINA");
-        JButton mod = new JButton("MODIFICA");
+        JButton add = new JButton("NEW");
+        JButton delete = new JButton("DELETE");
+        JButton edit = new JButton("EDIT");
         JButton exit = new JButton("BACK");
         
 
-        Dimension size = mod.getPreferredSize();
+        Dimension size = delete.getPreferredSize();
         
         add.setBounds(6, 10, size.width, size.height);
-        del.setBounds(6, 70, size.width, size.height);
-        mod.setBounds(6, 130, size.width, size.height);
+        delete.setBounds(6, 70, size.width, size.height);
+        edit.setBounds(6, 130, size.width, size.height);
         exit.setBounds(6, 235, size.width, size.height);
         
-        p.setSize(100, 520);
-        p.setLayout(null);
-        p.add(add);
-        p.add(mod);
-        p.add(del);
-        p.add(exit);
-        p.setBackground(Color.white);//Da cambiare/eliminare
+        buttonPanel.setSize(100, 520);
+        buttonPanel.setLayout(null);
+        buttonPanel.add(add);
+        buttonPanel.add(edit);
+        buttonPanel.add(delete);
+        buttonPanel.add(exit);
+        buttonPanel.setBackground(Color.white);//Da cambiare/eliminare
         
-        pview.setSize(520,150);
-        pview.setLayout(null);
-        pview.setBackground(Color.red);//Da cambiare/eliminare
-        pview.add(scroll);
+        menuPanel.setSize(520,150);
+        menuPanel.setLayout(null);
+        menuPanel.setBackground(Color.red);//Da cambiare/eliminare
+        menuPanel.add(scroll);
         
         scroll.setLocation(100, 0);
         scroll.setSize(405,150);
@@ -69,47 +69,47 @@ public class GUIChef extends JFrame{
         //text.setEditable(false);
         table.setShowGrid(false);
         
-        JPanel padd = aggiungiPiatto();
+        JPanel addPanel = addItem();
         //JPanel pdel = rimuoviPiatto();
-        JPanel pedit = modificaPiatto();
+        JPanel editPanel = editItem();
        
         //c.add(padd);
         
         //c.add(pdel);
          
-        add(p);
-        add(pview);
-        add(padd);
+        add(buttonPanel);
+        add(menuPanel);
+        add(addPanel);
         //add(pdel);
-        add(pedit);
+        add(editPanel);
         
         
-        padd.setSize(420, 400);
-        padd.setBackground(Color.yellow);//Da cambiare/eliminare
+        addPanel.setSize(420, 400);
+        addPanel.setBackground(Color.yellow);//Da cambiare/eliminare
         
         //pdel.setSize(420, 400);
         //pdel.setBackground(Color.black);//Da cambiare/eliminare
         
-        pedit.setSize(420, 400);
-        pedit.setBackground(Color.green);//Da cambiare/eliminare
+        editPanel.setSize(420, 400);
+        editPanel.setBackground(Color.green);//Da cambiare/eliminare
         
         //Listener Bottoni  
         
         add.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	//padd.setVisible(true); 
-            	if(padd.isVisible()){
-                    padd.setVisible(false);
+            	if(addPanel.isVisible()){
+                    addPanel.setVisible(false);
                     
                 }else{
                 	//pdel.setVisible(false);
-                	pedit.setVisible(false);
-                    padd.setVisible(true);
+                	editPanel.setVisible(false);
+                    addPanel.setVisible(true);
                 }
             }                
         });
         
-        del.addActionListener(new ActionListener(){
+        delete.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	/*
             	if(pdel.isVisible()){
@@ -122,19 +122,21 @@ public class GUIChef extends JFrame{
                 
                 }*/
             	if(table.getSelectedRow() != -1) {
-            		int reply = JOptionPane.showConfirmDialog(null, "Eliminare questo piatto?", "Conferma", JOptionPane.YES_NO_OPTION);
+            		int reply = JOptionPane.showConfirmDialog(null, "Delete this item?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
 	            	if (reply == JOptionPane.YES_OPTION) {
 	            		try {
 	    					removeButtonActionPerformed(e);
-	    					JOptionPane.showMessageDialog(null, "Piatto eliminato");
+	    					JOptionPane.showMessageDialog(null, "Item deleted");
 	    				} catch (IOException e1) {
 	    					// TODO Auto-generated catch block
-	    					JOptionPane.showMessageDialog(null, "Selezionare il piatto");
+	    					JOptionPane.showMessageDialog(null, "Select item");
 	    				}
 	            	} else {
-	            	    JOptionPane.showMessageDialog(null, "Piatto non eliminato");
+	            	    JOptionPane.showMessageDialog(null, "Item not deleted");
 	            	    //System.exit(0);
 	            	}
+            	}else {
+            		JOptionPane.showMessageDialog(null, "Select a row");
             	}
             	
             	
@@ -142,16 +144,16 @@ public class GUIChef extends JFrame{
             }                
         });
         
-        mod.addActionListener(new ActionListener(){
+        edit.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	
-            	if(pedit.isVisible()){
-                    pedit.setVisible(false);
+            	if(editPanel.isVisible()){
+                    editPanel.setVisible(false);
                     
                 }else{
-                	padd.setVisible(false);
+                	addPanel.setVisible(false);
                 	//pdel.setVisible(false);
-                    pedit.setVisible(true);
+                    editPanel.setVisible(true);
                 }
             }                
         });
@@ -172,26 +174,26 @@ public class GUIChef extends JFrame{
     
     
     
-    private JPanel aggiungiPiatto() {
-    	JPanel jp = new JPanel();
+    private JPanel addItem() {
+    	JPanel addPanel = new JPanel();
         
-        JTextField nomePiattoField = new JTextField("Nome Piatto");
-        JTextField prezzoPiattoField = new JTextField("Prezzo Piatto");
+        JTextField itemNameField = new JTextField("Item name");
+        JTextField itemPriceField = new JTextField("Item price");
         
-        JButton salva = new JButton("SALVA");
+        JButton save = new JButton("ADD");
         
-        nomePiattoField.setForeground(new Color(153,153,153));
-        prezzoPiattoField.setForeground(new Color(153,153,153));
+        itemNameField.setForeground(new Color(153,153,153));
+        itemPriceField.setForeground(new Color(153,153,153));
    
-        nomePiattoField.addFocusListener(new FocusListener(){
+        itemNameField.addFocusListener(new FocusListener(){
 			@Override
 			public void focusGained(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(nomePiattoField.getText().equals("Nome Piatto")) {
-					nomePiattoField.setText("");
-					nomePiattoField.setForeground(Color.BLACK);
-				}else if (nomePiattoField.getText().equals("") ){
-					nomePiattoField.setForeground(Color.GRAY);
+				if(itemNameField.getText().equals("Item name")) {
+					itemNameField.setText("");
+					itemNameField.setForeground(Color.BLACK);
+				}else if (itemNameField.getText().equals("") ){
+					itemNameField.setForeground(Color.GRAY);
 				}
 				
 			}
@@ -199,47 +201,47 @@ public class GUIChef extends JFrame{
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(nomePiattoField.getText().equals("")) {
-					nomePiattoField.setText("Nome Piatto");
-					nomePiattoField.setForeground(Color.GRAY);
+				if(itemNameField.getText().equals("")) {
+					itemNameField.setText("Item name");
+					itemNameField.setForeground(Color.GRAY);
 				}else {
-					nomePiattoField.setForeground(Color.BLACK);
+					itemNameField.setForeground(Color.BLACK);
 				}
 			}
         	
         });
         
-        prezzoPiattoField.addFocusListener(new FocusListener() {
+        itemPriceField.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(prezzoPiattoField.getText().equals("Prezzo Piatto")) {
-					prezzoPiattoField.setText("");
-					prezzoPiattoField.setForeground(Color.BLACK);
-				}else if (prezzoPiattoField.getText().equals("") ){
-					prezzoPiattoField.setForeground(Color.GRAY);
+				if(itemPriceField.getText().equals("Item price")) {
+					itemPriceField.setText("");
+					itemPriceField.setForeground(Color.BLACK);
+				}else if (itemPriceField.getText().equals("") ){
+					itemPriceField.setForeground(Color.GRAY);
 				}
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(prezzoPiattoField.getText().equals("")) {
-					prezzoPiattoField.setText("Prezzo Piatto");
-					prezzoPiattoField.setForeground(Color.GRAY);
+				if(itemPriceField.getText().equals("")) {
+					itemPriceField.setText("Item price");
+					itemPriceField.setForeground(Color.GRAY);
 				}else {
-					prezzoPiattoField.setForeground(Color.BLACK);
+					itemPriceField.setForeground(Color.BLACK);
 				}
 			}
         	
         });
         
-        salva.addActionListener(new ActionListener()
+        save.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
             	
             	try {
-					saveButtonActionPerformed(e, nomePiattoField,  prezzoPiattoField);
+					saveButtonActionPerformed(e, itemNameField,  itemPriceField);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -247,21 +249,21 @@ public class GUIChef extends JFrame{
             }
         });
         
-        nomePiattoField.setLocation(146, 185);
-        nomePiattoField.setSize(100, 20);
+        itemNameField.setLocation(146, 185);
+        itemNameField.setSize(100, 20);
         
-        prezzoPiattoField.setLocation(146, 215);
-        prezzoPiattoField.setSize(100, 20);
+        itemPriceField.setLocation(146, 215);
+        itemPriceField.setSize(100, 20);
         
-        salva.setBounds(270, 200, 75, 20);
+        save.setBounds(270, 200, 75, 20);
         
-        jp.setLayout(null);
-        jp.add(nomePiattoField);
-        jp.add(prezzoPiattoField);
-        jp.add(salva); 
-        jp.setVisible(false);
+        addPanel.setLayout(null);
+        addPanel.add(itemNameField);
+        addPanel.add(itemPriceField);
+        addPanel.add(save); 
+        addPanel.setVisible(false);
                
-        return jp;
+        return addPanel;
     }
     /*
     private JPanel rimuoviPiatto() {
@@ -323,25 +325,25 @@ public class GUIChef extends JFrame{
     }
     */
     
-    private JPanel modificaPiatto() {
-    	JPanel jpm = new JPanel();
+    private JPanel editItem() {
+    	JPanel editPanel = new JPanel();
     	JButton edit = new JButton("EDIT");
     	
-    	JTextField piatto = new JTextField("Piatto");
-    	piatto.setForeground(new Color(153,153,153));
+    	JTextField item = new JTextField("Item");
+    	item.setForeground(new Color(153,153,153));
     	
-    	JTextField nuovoPrezzo = new JTextField("Nuovo prezzo");
-    	nuovoPrezzo.setForeground(new Color(153,153,153));
+    	JTextField newPrice = new JTextField("New price");
+    	newPrice.setForeground(new Color(153,153,153));
     	
-    	piatto.addFocusListener(new FocusListener(){
+    	item.addFocusListener(new FocusListener(){
 			@Override
 			public void focusGained(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(piatto.getText().equals("Piatto")) {
-					piatto.setText("");
-					piatto.setForeground(Color.BLACK);
-				}else if (piatto.getText().equals("") ){
-					piatto.setForeground(Color.GRAY);
+				if(item.getText().equals("Item")) {
+					item.setText("");
+					item.setForeground(Color.BLACK);
+				}else if (item.getText().equals("") ){
+					item.setForeground(Color.GRAY);
 				}
 				
 			}
@@ -349,25 +351,25 @@ public class GUIChef extends JFrame{
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(piatto.getText().equals("")) {
-					piatto.setText("Piatto");
-					piatto.setForeground(Color.GRAY);
+				if(item.getText().equals("")) {
+					item.setText("Item");
+					item.setForeground(Color.GRAY);
 				}else {
-					piatto.setForeground(Color.BLACK);
+					item.setForeground(Color.BLACK);
 				}
 			}
         	
         });
     	
-    	nuovoPrezzo.addFocusListener(new FocusListener(){
+    	newPrice.addFocusListener(new FocusListener(){
 			@Override
 			public void focusGained(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(nuovoPrezzo.getText().equals("Nuovo prezzo")) {
-					nuovoPrezzo.setText("");
-					nuovoPrezzo.setForeground(Color.BLACK);
-				}else if (nuovoPrezzo.getText().equals("") ){
-					nuovoPrezzo.setForeground(Color.GRAY);
+				if(newPrice.getText().equals("New price")) {
+					newPrice.setText("");
+					newPrice.setForeground(Color.BLACK);
+				}else if (newPrice.getText().equals("") ){
+					newPrice.setForeground(Color.GRAY);
 				}
 				
 			}
@@ -375,11 +377,11 @@ public class GUIChef extends JFrame{
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(nuovoPrezzo.getText().equals("")) {
-					nuovoPrezzo.setText("Nuovo prezzo");
-					nuovoPrezzo.setForeground(Color.GRAY);
+				if(newPrice.getText().equals("")) {
+					newPrice.setText("New price");
+					newPrice.setForeground(Color.GRAY);
 				}else {
-					nuovoPrezzo.setForeground(Color.BLACK);
+					newPrice.setForeground(Color.BLACK);
 				}
 			}
         	
@@ -390,138 +392,138 @@ public class GUIChef extends JFrame{
             public void actionPerformed(ActionEvent e){
             	
             	try {
-					editButtonActionPerformed(e, piatto, nuovoPrezzo);
+					editButtonActionPerformed(e, item, newPrice);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, "Piatto non esistente");
+					JOptionPane.showMessageDialog(null, "The item doesn't exist");
 					
-					piatto.setText("Piatto");
-		    		piatto.setForeground(Color.GRAY);
+					item.setText("Item");
+		    		item.setForeground(Color.GRAY);
 		            
-		            nuovoPrezzo.setText("Nuovo prezzo");
-		    		nuovoPrezzo.setForeground(Color.GRAY);
+		            newPrice.setText("New price");
+		    		newPrice.setForeground(Color.GRAY);
 				}
             }
         });
     	
-    	piatto.setLocation(146, 185);
-    	nuovoPrezzo.setLocation(146, 215);
+    	item.setLocation(146, 185);
+    	newPrice.setLocation(146, 215);
     	
-    	piatto.setSize(100, 20);
+    	item.setSize(100, 20);
 
-    	nuovoPrezzo.setSize(100, 20);
+    	newPrice.setSize(100, 20);
     	edit.setBounds(270, 200, 75, 20);
     	
-    	jpm.setLayout(null);
-        jpm.add(piatto);
+    	editPanel.setLayout(null);
+        editPanel.add(item);
 
-        jpm.add(nuovoPrezzo);
-        jpm.add(edit);
-        jpm.setVisible(false);
+        editPanel.add(newPrice);
+        editPanel.add(edit);
+        editPanel.setVisible(false);
     	
-    	return jpm;
+    	return editPanel;
     }
     
-    private void saveButtonActionPerformed(ActionEvent e, JTextField nomePiattoField, JTextField prezzoPiattoField) throws IOException{
+    private void saveButtonActionPerformed(ActionEvent e, JTextField itemNameField, JTextField itemPriceField) throws IOException{
     	
-    	if(!isAlpha(nomePiattoField.getText())) {
+    	if(!isAlpha(itemNameField.getText())) {
     		
-    		JOptionPane.showMessageDialog(null, "Usare solo lettere");
+    		JOptionPane.showMessageDialog(null, "Use only letters");
     		
-    		nomePiattoField.setText("Nome Piatto");
-	        nomePiattoField.setForeground(Color.GRAY);
+    		itemNameField.setText("Item name");
+	        itemNameField.setForeground(Color.GRAY);
 	        
-	        prezzoPiattoField.setText("Prezzo Piatto");
-	        prezzoPiattoField.setForeground(Color.GRAY);
+	        itemPriceField.setText("Item price");
+	        itemPriceField.setForeground(Color.GRAY);
 	        
-    	}else if (!isDigit(prezzoPiattoField.getText())){
+    	}else if (!isDigit(itemPriceField.getText())){
     
-    		JOptionPane.showMessageDialog(null, "Usare solo numeri e virgola");
+    		JOptionPane.showMessageDialog(null, "Use only numbers and comma");
     		
     		//nomePiattoField.setText("Nome Piatto");
 	        //nomePiattoField.setForeground(Color.GRAY);
 	        
-	        prezzoPiattoField.setText("Prezzo Piatto");
-	        prezzoPiattoField.setForeground(Color.GRAY);
+	        itemPriceField.setText("Item price");
+	        itemPriceField.setForeground(Color.GRAY);
 	        
     	}else {
     	
-    		menu.addItem(nomePiattoField.getText(), Double.parseDouble(prezzoPiattoField.getText()));
-	        System.out.print(nomePiattoField.getText() + Double.parseDouble(prezzoPiattoField.getText()));
+    		menu.addItem(itemNameField.getText(), Double.parseDouble(itemPriceField.getText()));
+	        System.out.print(itemNameField.getText() + Double.parseDouble(itemPriceField.getText()));
 	        menu.WriteToFile();                
 	        
-	        pview.remove(scroll);            
-	        scroll = aggiornaMenu();
-	        pview.add(scroll);
+	        menuPanel.remove(scroll);            
+	        scroll = reloadMenu();
+	        menuPanel.add(scroll);
 	        
-	        nomePiattoField.setText("Nome Piatto");
-	        nomePiattoField.setForeground(Color.GRAY);
+	        itemNameField.setText("Item name");
+	        itemNameField.setForeground(Color.GRAY);
 	        
-	        prezzoPiattoField.setText("Prezzo Piatto");
-	        prezzoPiattoField.setForeground(Color.GRAY);
+	        itemPriceField.setText("Item price");
+	        itemPriceField.setForeground(Color.GRAY);
     	}    	
     }
   
     private void removeButtonActionPerformed(ActionEvent e) throws IOException {
     	menu.removeItem(table.getSelectedKey().toString());
     	menu.WriteToFile();
-    	pview.remove(scroll);            
-        scroll = aggiornaMenu();
-        pview.add(scroll);
+    	menuPanel.remove(scroll);            
+        scroll = reloadMenu();
+        menuPanel.add(scroll);
         
         //piattoRemover.setText("Piatto da rimuovere");
 		//piattoRemover.setForeground(Color.GRAY);
     }
     
-    private void editButtonActionPerformed(ActionEvent e, JTextField piatto, JTextField nuovoPrezzo) throws IOException {
+    private void editButtonActionPerformed(ActionEvent e, JTextField item, JTextField newPrice) throws IOException {
     	
-    	if(!isAlpha(piatto.getText())) {
+    	if(!isAlpha(item.getText())) {
     		
-    		JOptionPane.showMessageDialog(null, "Usare solo lettere");
+    		JOptionPane.showMessageDialog(null, "Use only letters");
     		
-    		piatto.setText("Piatto");
-    		piatto.setForeground(Color.GRAY);
+    		item.setText("Item");
+    		item.setForeground(Color.GRAY);
             
-            nuovoPrezzo.setText("Nuovo prezzo");
-    		nuovoPrezzo.setForeground(Color.GRAY);
+            newPrice.setText("New price");
+    		newPrice.setForeground(Color.GRAY);
 	        
-    	}else if (!isDigit(nuovoPrezzo.getText())){
+    	}else if (!isDigit(newPrice.getText())){
     
-    		JOptionPane.showMessageDialog(null, "Usare solo numeri e virgola");
+    		JOptionPane.showMessageDialog(null, "Use only numbers and comma");
     		
-    		piatto.setText("Piatto");
-    		piatto.setForeground(Color.GRAY);
+    		item.setText("Item");
+    		item.setForeground(Color.GRAY);
             
-            nuovoPrezzo.setText("Nuovo prezzo");
-    		nuovoPrezzo.setForeground(Color.GRAY);
+            newPrice.setText("New price");
+    		newPrice.setForeground(Color.GRAY);
 	        
     	}else {
     
-    		menu.replaceItem(piatto.getText(), Double.parseDouble(nuovoPrezzo.getText()));
+    		menu.replaceItem(item.getText(), Double.parseDouble(newPrice.getText()));
 	    	menu.WriteToFile();
-	    	pview.remove(scroll);            
-	        scroll = aggiornaMenu();
-	        pview.add(scroll);
+	    	menuPanel.remove(scroll);            
+	        scroll = reloadMenu();
+	        menuPanel.add(scroll);
 	    	
-	        piatto.setText("Piatto");
-			piatto.setForeground(Color.GRAY);
+	        item.setText("Item");
+			item.setForeground(Color.GRAY);
 	        
-	        nuovoPrezzo.setText("Nuovo prezzo");
-			nuovoPrezzo.setForeground(Color.GRAY);
+	        newPrice.setText("New price");
+			newPrice.setForeground(Color.GRAY);
     	}
     }
     
     private void exitButtonActionPerformed(ActionEvent e) throws IOException{
-    	GUIRistorante r = new GUIRistorante();
+    	GUIRestaurant r = new GUIRestaurant();
         r.setVisible(true);
         this.dispose();
     }
     
-    private JScrollPane aggiornaMenu() throws IOException {
-    	String[] colonne = new String[] {"Piatto", "Prezzo ($)"};
+    private JScrollPane reloadMenu() throws IOException {
+    	String[] column = new String[] {"Item", "Price (€)"};
     	//piatti = menu.getItems();
     	
-    	table = new DynamicJTable(this.menu, colonne);
+    	table = new DynamicJTable(this.menu, column);
     	table.setShowGrid(false);
         //table.setEnabled(false);
         
@@ -537,7 +539,7 @@ public class GUIChef extends JFrame{
         return name.matches("[a-zA-Z]+");
     }
     
-    public boolean isDigit(String valore) {
-    	return valore.matches("[0-9.]+");
+    public boolean isDigit(String value) {
+    	return value.matches("[0-9.]+");
     }
 }

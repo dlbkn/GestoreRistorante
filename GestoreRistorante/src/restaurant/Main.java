@@ -2,12 +2,12 @@ package restaurant;
 
 import java.io.IOException;
 
-import GUI.GUIRistorante;
+import GUI.GUIRestaurant;
 
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		GUIRistorante r = new GUIRistorante();
+		GUIRestaurant r = new GUIRestaurant();
         r.setVisible(true);
 
 	}

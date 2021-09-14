@@ -15,17 +15,17 @@ import javax.swing.JScrollPane;
 
 import application.DynamicJTable;
 
-public class GUITavoli extends JFrame{
-	public DynamicJTable table;
-	public JScrollPane scroll;
-	public OrderHolder orderHolder;
-	public int i;
-	public JPanel piatti;
+public class GUITables extends JFrame{
+	private DynamicJTable table;
+	private JScrollPane scroll;
+	private OrderHolder orderHolder;
+	private int i;
+	private JPanel items;
 	
-	public GUITavoli(OrderHolder orderHolder, int i) throws IOException {
+	public GUITables(OrderHolder orderHolder, int i) throws IOException {
 		this.orderHolder = orderHolder;
 		this.i = i;
-		this.scroll = this.aggiornaTavoli();
+		this.scroll = this.reloadTable();
 		init();
 	}
 	
@@ -38,8 +38,8 @@ public class GUITavoli extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
-        piatti = new JPanel();
-        piatti.setLayout(null);
+        items = new JPanel();
+        items.setLayout(null);
         
         JButton exit = new JButton("EXIT");
         JButton remove = new JButton("REMOVE");
@@ -53,10 +53,10 @@ public class GUITavoli extends JFrame{
         scroll.setVisible(true);
         table.setShowGrid(false);
         
-        add(piatti);
-        piatti.add(scroll);
-        piatti.add(exit);
-        piatti.add(remove);
+        add(items);
+        items.add(scroll);
+        items.add(exit);
+        items.add(remove);
         
         remove.addActionListener(new ActionListener() 
         {
@@ -84,10 +84,10 @@ public class GUITavoli extends JFrame{
 	}
 	
 	
-	private JScrollPane aggiornaTavoli() throws IOException {
-    	String[] colonne = new String[] {"Piatto", "Quantità"};
+	private JScrollPane reloadTable() throws IOException {
+    	String[] column = new String[] {"Item", "Amount"};
  
-    	table = new DynamicJTable(orderHolder.getOrder(i), colonne);
+    	table = new DynamicJTable(orderHolder.getOrder(i), column);
     	table.setShowGrid(false);
         
     	scroll = new JScrollPane (table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -98,7 +98,7 @@ public class GUITavoli extends JFrame{
     }
 	
 	private void exitButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
-    	GUICuoco r = new GUICuoco(orderHolder);
+    	GUICook r = new GUICook(orderHolder);
         r.setVisible(true);
         this.dispose();
     }
@@ -106,11 +106,11 @@ public class GUITavoli extends JFrame{
 	private void removeButtonActionPerformed(ActionEvent e) throws IOException {
 		try {
 			orderHolder.serveItem(i, table.getSelectedKey().toString());
-			piatti.remove(scroll);
-			scroll = aggiornaTavoli();
-			piatti.add(scroll);
+			items.remove(scroll);
+			scroll = reloadTable();
+			items.add(scroll);
 		} catch (Exception e2) {
-			GUICuoco r = new GUICuoco(orderHolder);
+			GUICook r = new GUICook(orderHolder);
 	        r.setVisible(true);
 			this.dispose();
 			

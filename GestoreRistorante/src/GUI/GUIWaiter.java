@@ -14,14 +14,14 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 
-public class GUICameriere extends JFrame{
-	public Menu menu = new Menu("menu.txt");
-	public OpenOrder openOrder;
-	public JTextField text;
-	public Container c;
+public class GUIWaiter extends JFrame{
+	private Menu menu = new Menu("GestoreRistorante\\resources\\menu");
+	private OpenOrder openOrder;
+	private JTextField text;
+	//private Container c;
 	
 	
-	public GUICameriere(OpenOrder openOrder) throws FileNotFoundException, IOException{
+	public GUIWaiter(OpenOrder openOrder) throws FileNotFoundException, IOException{
 		this.openOrder = openOrder;
         init();
     }
@@ -30,7 +30,7 @@ public class GUICameriere extends JFrame{
     	
         //Creation of Frame
     	//Creazione del frame
-        setTitle("CAMERIERE");
+        setTitle("WAITER");
         setSize(420, 310);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -38,60 +38,60 @@ public class GUICameriere extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
-        Container c = this.getContentPane();
+        //Container c = this.getContentPane();
         
         // Creation of panel
         //Creazione del panel
-        JPanel p = new JPanel();
+        JPanel panel = new JPanel();
         
         //Creation of Button for order, exit
-        JButton ordine = new JButton("ORDINE");
+        JButton order = new JButton("ORDER");
         JButton exit = new JButton("BACK");
         Dimension size = exit.getPreferredSize();
         
         //Creation second panel for locate the button
-        JPanel p2 = creaMenuBottoni(size); 
-        c.add(p2);
-        c.add(p);
+        JPanel menuPanel = createButtonMenu(size); 
+        add(menuPanel);
+        add(panel);
                    
         //panel size
-        p.setSize(100, 300);
-        p.setLocation(0,300);
-        p2.setSize(420, 310);
+        panel.setSize(100, 300);
+        panel.setLocation(0,300);
+        menuPanel.setSize(420, 310);
         
         //Creates new label for the panel
         //Creazione scritte per il panel
-        JLabel jl = new JLabel("Piatti");
-        JLabel jl2 = new JLabel("Prezzo");
-        JLabel jl3 = new JLabel("Quantit‡");
+        JLabel itemsLabel = new JLabel("Items");
+        JLabel priceLabel = new JLabel("Price");
+        JLabel amountLabel = new JLabel("Amount");
         
         exit.setBounds(6, 235, size.width, size.height);
-        ordine.setBounds(300, 235, 90, size.height);
+        order.setBounds(300, 235, 90, size.height);
         
-        p.setLayout(null);
-        p2.setLayout(null);
+        panel.setLayout(null);
+        menuPanel.setLayout(null);
         //p2 = creaMenuBottoni();
         
-        jl.setLocation(125, 0);
-        jl.setSize(100, 40);
+        itemsLabel.setLocation(125, 0);
+        itemsLabel.setSize(100, 40);
         
-        jl2.setLocation(330, 0);
-        jl2.setSize(100, 40);
+        priceLabel.setLocation(330, 0);
+        priceLabel.setSize(100, 40);
         
-        jl3.setLocation(25, 0);
-        jl3.setSize(100,40);
+        amountLabel.setLocation(25, 0);
+        amountLabel.setSize(100,40);
         
         text = new JTextField(10);
         text.setSize(35, 25);
         text.setLocation(25, 36);
         
-        p2.add(jl);
-        p2.add(jl2);
-        p2.add(jl3);
-        p2.add(text);
+        menuPanel.add(itemsLabel);
+        menuPanel.add(priceLabel);
+        menuPanel.add(amountLabel);
+        menuPanel.add(text);
         
-        p.add(exit);
-        p.add(ordine);
+        panel.add(exit);
+        panel.add(order);
         
         // Action Listener per tornare indietro.
         exit.addActionListener(new ActionListener()
@@ -106,13 +106,13 @@ public class GUICameriere extends JFrame{
             }
         });
         // Action Listener che aggiorna il frame e va all'ordine. 
-        ordine.addActionListener(new ActionListener()
+        order.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
             	try {
-                    ordineButtonActionPerformed(e);
+                    orderButtonActionPerformed(e);
                 } catch (IOException ex) {
-                    Logger.getLogger(GUIRistorante.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(GUIRestaurant.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -136,64 +136,64 @@ public class GUICameriere extends JFrame{
     }
     
     //Action Performed per aggiornare il frame e andare al pannello dell'ordine
-    private void ordineButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
+    private void orderButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
     	if(!openOrder.empty()) {
-    		GUIOrdine r = new GUIOrdine(openOrder);
+    		GUIOrder r = new GUIOrder(openOrder);
 	        r.setVisible(true);
 	        this.dispose();
     	}else {
-    		JOptionPane.showMessageDialog(null, "Ordini non presenti");
+    		JOptionPane.showMessageDialog(null, "There are no orders");
     	}
     	
     }
     
     //Metodo per creare i bottoni per l'ordinazione di un determinato piatto
-    private JPanel creaMenuBottoni(Dimension size) throws FileNotFoundException{
-        JPanel jp = new JPanel();
-        jp.setLayout(null);
+    private JPanel createButtonMenu(Dimension size) throws FileNotFoundException{
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(null);
         int x = 36;
         
         // creo una lista di JButton che verr√† riempita tramite il for, che a sua volta legge
         // degli Object. Nel for, oltre alla creazione dei bottoni, √® presente anche un
         // Action Listener che, se premuto,aggiunge il piatto con l'annessa quantit√† all'ordine.
         
-        ArrayList<JButton> lista = new ArrayList<JButton>();
+        ArrayList<JButton> list = new ArrayList<JButton>();
         for(int i = 0; i < menu.getItems().length; i++) {
-        	lista.add(new JButton((String) menu.getItems()[i][0]));
+        	list.add(new JButton((String) menu.getItems()[i][0]));
         	
-            lista.get(i).setBounds(6, x, 90, size.height);
-            lista.get(i).setLocation(125, x);
+            list.get(i).setBounds(6, x, 90, size.height);
+            list.get(i).setLocation(125, x);
             
-            JLabel prezzo = new JLabel("$ " + menu.getItemPrice(lista.get(i).getText()));
+            JLabel price = new JLabel("Ä " + menu.getItemPrice(list.get(i).getText()));
             
-            prezzo.setSize(100, 20);
-            prezzo.setLocation(330, x);
+            price.setSize(100, 20);
+            price.setLocation(330, x);
             
             x+=30;
             
-            jp.add(lista.get(i));
-            jp.add(prezzo);
-            String nome = (String) menu.getItems()[i][0];
+            buttonPanel.add(list.get(i));
+            buttonPanel.add(price);
+            String name = (String) menu.getItems()[i][0];
             
             
-            lista.get(i).addActionListener(new ActionListener()
+            list.get(i).addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent e){
                 	String val = text.getText();
                 	if(isDigit(val)) {
                 		int num = Integer.parseInt(val);
-                		openOrder.addItem(nome,num); 
+                		openOrder.addItem(name,num); 
                 		System.out.println(openOrder.getOrderMap());
                 		text.setText("");
                 	}else {
-                		JOptionPane.showMessageDialog(null, "Usare solo numeri");
+                		JOptionPane.showMessageDialog(null, "Use only numbers");
                 	}
                 	
                 }
             });
             
         }
-        return jp;
+        return buttonPanel;
     }
     public boolean isAlpha(String name) {
         return name.matches("[a-zA-Z]+");

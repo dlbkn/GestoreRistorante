@@ -14,22 +14,22 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import application.DynamicJTable;
 
-public class GUICuoco extends JFrame{
+public class GUICook extends JFrame{
 	
-	public OrderHolder orderHolder;
-	public JScrollPane scroll;
-	public DynamicJTable table;
-	public PaymentHolder payments;
+	private OrderHolder orderHolder;
+	private JScrollPane scroll;
+	private DynamicJTable table;
+	//private PaymentHolder payments;
 	
 	
-	public GUICuoco(OrderHolder orderHolder) throws IOException {
+	public GUICook(OrderHolder orderHolder) throws IOException {
 		this.orderHolder = orderHolder;
-		this.scroll = this.aggiornaTavoli();
+		this.scroll = this.reloadTable();
 		init();
 	}
 
 	private void init() {
-		setTitle("CUOCO");
+		setTitle("COOK");
         setSize(420, 310);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -37,10 +37,10 @@ public class GUICuoco extends JFrame{
 		     
         // Creation of panel
         //Creazione del panel
-        JPanel p = new JPanel();
+        JPanel mainPanel = new JPanel();
              
-        p.setSize(420, 310);
-        p.setLayout(null);
+        mainPanel.setSize(420, 310);
+        mainPanel.setLayout(null);
        
         JButton exit = new JButton("EXIT");
         
@@ -61,11 +61,11 @@ public class GUICuoco extends JFrame{
 
         table.getColumnModel().getColumn(0).setCellRenderer(rendar); 
         
-        p.add(exit);
-        p.add(scroll);
-        p.setBackground(Color.white);//Da cambiare/eliminare
+        mainPanel.add(exit);
+        mainPanel.add(scroll);
+        mainPanel.setBackground(Color.white);//Da cambiare/eliminare
 
-        add(p);
+        add(mainPanel);
  
         table.getSelectionModel().addListSelectionListener((ListSelectionListener) new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
@@ -97,8 +97,8 @@ public class GUICuoco extends JFrame{
         }
 	
 	
-	private JScrollPane aggiornaTavoli() throws IOException {
-    	String[] colonne = new String[] {"Tavolo"};
+	private JScrollPane reloadTable() throws IOException {
+    	String[] colonne = new String[] {"Table"};
  
     	table = new DynamicJTable(orderHolder, colonne);
     	table.setShowGrid(false);
@@ -114,7 +114,7 @@ public class GUICuoco extends JFrame{
 
 	private void tableSelectActionPerformed(ListSelectionEvent e, OrderHolder orderHolder, int i) {
 		try {
-			GUITavoli t = new GUITavoli(orderHolder, i);
+			GUITables t = new GUITables(orderHolder, i);
 			t.setVisible(true);
 			
 		} catch (IOException ex) {

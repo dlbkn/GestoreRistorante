@@ -99,6 +99,7 @@ public class PaymentHolder implements Bidimensional {
 			// printing receipt 
 			String curPath = (this.path + this.payCount);
 			File file = new File(curPath);
+			this.payCount++;
 			// trying to open file
 			try {
 				// in case file exits

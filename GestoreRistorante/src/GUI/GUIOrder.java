@@ -18,11 +18,11 @@ import javax.swing.table.DefaultTableModel;
 
 import application.DynamicJTable;
 
-public class GUIOrdine extends JFrame{
+public class GUIOrder extends JFrame{
 	private OpenOrder openOrder;
 	private DefaultTableModel model;
 	
-	public GUIOrdine(OpenOrder openOrder) throws FileNotFoundException, IOException {
+	public GUIOrder(OpenOrder openOrder) throws FileNotFoundException, IOException {
 		this.openOrder = openOrder;
 		init();
 		// TODO Auto-generated constructor stub
@@ -31,7 +31,7 @@ public class GUIOrdine extends JFrame{
 	private void init() throws FileNotFoundException, IOException{
 		
 		// Creazione del Frame
-		setTitle("ORDINE");
+		setTitle("ORDER");
         setSize(420, 310);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -41,8 +41,8 @@ public class GUIOrdine extends JFrame{
         //Container c = this.getContentPane(); 
         JPanel panel = new JPanel();
         
-        String[] colonne = new String[] {
-                "Piatto", "Quantit‡†"
+        String[] column = new String[] {
+                "Item", "Amount†"
             };
         
         JButton exit = new JButton("EXIT");
@@ -54,7 +54,7 @@ public class GUIOrdine extends JFrame{
         JButton clear = new JButton("CLEAR");
         JButton send  = new JButton("SEND");
         
-        DynamicJTable table = new DynamicJTable(openOrder,colonne);
+        DynamicJTable table = new DynamicJTable(openOrder,column);
         table.setSize(200,200);
         table.setLocation(50,50);
         
@@ -82,9 +82,9 @@ public class GUIOrdine extends JFrame{
             		JPanel panelSend = new JPanel();
 	                JTextField num = new JTextField(3);
 	                panelSend.add(num);
-	            	Object[] options = { "Invio",
+	            	Object[] options = { "Send",
 	                "Quit" };  
-	                int result = JOptionPane.showOptionDialog(null, panelSend, "Selezionare il tavolo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+	                int result = JOptionPane.showOptionDialog(null, panelSend, "Select the table", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
 	                        null, options, null);
 	                
 	                if(result == JOptionPane.OK_OPTION) {
@@ -93,17 +93,15 @@ public class GUIOrdine extends JFrame{
 							openOrder.sendOrder(Integer.parseInt(num.getText()));
 							exitButtonActionPerformed(e);
 						}catch (NumberFormatException nfe) {
-							JOptionPane.showMessageDialog(null, "Selezionare solo numeri");
-						}catch (FileNotFoundException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Use only numbers");
 						}catch (IOException e1) {
 							// TODO Auto-generated catch block
-							JOptionPane.showMessageDialog(null, "Inserire quantit‡");
+							JOptionPane.showMessageDialog(null, "Enter amount");
+						}catch (Exception e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null, "Table n." + Integer.parseInt(num.getText()) + " has already ordered");
 						}  
 	                }
-	                //prova a convertire la stringa in intero
-	                
             	}
             		
             }
@@ -114,34 +112,34 @@ public class GUIOrdine extends JFrame{
         {
             public void actionPerformed(ActionEvent e){
             	if(!openOrder.empty()) {
-            		int riga = table.getSelectedRow();
+            		int row = table.getSelectedRow();
 
 	            	//Controllo se √® stata selezionata una riga dalla tabella, se non √® stata
 	            	//selezionata allora dar√† una schermata di errore.
-	            	if (riga >= 0) {
+	            	if (row >= 0) {
 	            		
 	            		//creazione panel per immettere la quantit√† da togliere
 	                    JPanel panel = new JPanel();
 	                    JTextField num = new JTextField(3);
 	                    panel.add(num);
 	                    
-	                    Object[] options = { "Invio",
+	                    Object[] options = { "Send",
 	                    "Quit" };                                                         
-	                    int result = JOptionPane.showOptionDialog(null,panel, "Quantit‡† da eliminare", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+	                    int result = JOptionPane.showOptionDialog(null,panel, "Amount to delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
 	                            null, options, null);
 	                    //prova a convertire la stringa in intero
 	                    if(result == JOptionPane.OK_OPTION) {
 	                    	try{
 		                        Integer.parseInt(num.getText());
-		                        openOrder.removeItem((String)table.getModel().getValueAt(riga, 0),Integer.parseInt(num.getText()));
+		                        openOrder.removeItem((String)table.getModel().getValueAt(row, 0),Integer.parseInt(num.getText()));
 		                        table.display();
 		                    }catch (NumberFormatException nfe) {
-		                    	JOptionPane.showMessageDialog(null, "Selezionare solo numeri");
+		                    	JOptionPane.showMessageDialog(null, "Use only numbers");
 		                    }
 	                    }
 	                     
 	                }else{                	
-	                    JOptionPane.showMessageDialog(null, "Nessuna riga selezionata");
+	                    JOptionPane.showMessageDialog(null, "No row selected");
 	                }
             	}else {
             		try {
@@ -189,7 +187,7 @@ public class GUIOrdine extends JFrame{
 	}
 	//Action Performed per tornare alla schermata del cameriere
 	private void exitButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
-    	GUICameriere r = new GUICameriere(openOrder);
+    	GUIWaiter r = new GUIWaiter(openOrder);
         r.setVisible(true);
         this.dispose();
     }

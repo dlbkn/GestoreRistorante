@@ -12,18 +12,20 @@ import javax.swing.*;
 
 import application.DynamicJTable;
 
-public class GUICassa extends JFrame{
-	PaymentHolder payments;
-	DynamicJTable table;
-	public JScrollPane scroll;
-	public JPanel p;
-	public GUICassa(PaymentHolder payments) throws IOException {
+public class GUICash extends JFrame{
+	private PaymentHolder payments;
+	private DynamicJTable table;
+	private JScrollPane scroll;
+	private JPanel mainPanel;
+	
+	public GUICash(PaymentHolder payments) throws IOException {
 		this.payments = payments;
-		this.scroll = this.aggiornaPagamenti();
+		this.scroll = this.reloadPayments();
 		init();
 	}
+	
 	private void init() {
-		setTitle("CASSA");
+		setTitle("CASH");
         setSize(420, 310);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -32,10 +34,10 @@ public class GUICassa extends JFrame{
         
         JButton exit = new JButton("EXIT");
         JButton remove = new JButton("REMOVE"); 
-        p = new JPanel();
+        mainPanel = new JPanel();
         
-        p.setSize(420, 310);
-        p.setLayout(null);
+        mainPanel.setSize(420, 310);
+        mainPanel.setLayout(null);
         
         
         
@@ -44,10 +46,10 @@ public class GUICassa extends JFrame{
         exit.setBounds(10, 235, size.width, size.height);
         remove.setBounds(110, 235, 90, size.height);
         
-        add(p);
-        p.add(exit);
-        p.add(remove);
-        p.add(scroll);
+        add(mainPanel);
+        mainPanel.add(exit);
+        mainPanel.add(remove);
+        mainPanel.add(scroll);
         
         
         remove.addActionListener(new ActionListener()
@@ -83,19 +85,19 @@ public class GUICassa extends JFrame{
 	private void removeButtonActionPerformed(ActionEvent e) throws IOException {
 		try {
 			payments.removePayment(Integer.parseInt(table.getSelectedKey().toString()));
-			p.remove(scroll);
-			scroll = aggiornaPagamenti();
-			JOptionPane.showMessageDialog(null, "Elaborazione Scontrino");
-			p.add(scroll);
+			mainPanel.remove(scroll);
+			scroll = reloadPayments();
+			JOptionPane.showMessageDialog(null, "Receipt processing");
+			mainPanel.add(scroll);
 		} catch (Exception e2) {
 			System.out.println(e);
 		}
 	}
 	
-	private JScrollPane aggiornaPagamenti() throws IOException {
-    	String[] colonne = new String[] {"Tavolo", "Prezzo"};
+	private JScrollPane reloadPayments() throws IOException {
+    	String[] column = new String[] {"Table", "Price"};
  
-    	table = new DynamicJTable(payments, colonne);
+    	table = new DynamicJTable(payments, column);
     	table.setShowGrid(false);
         //table.setEnabled(false);
         
