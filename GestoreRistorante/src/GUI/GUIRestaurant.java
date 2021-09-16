@@ -18,8 +18,8 @@ public class GUIRestaurant extends JFrame{
 	private GUICook cook;
 	private GUICash cash;
 	
-	public GUIRestaurant() throws IOException{
-		this.res = new Restaurant("GestoreRistorante\\resources\\menu","GestoreRistorante\\resources\\");
+	public GUIRestaurant(Restaurant r) throws IOException{
+		this.res = r;
         init();
     }
     private void init(){
@@ -101,7 +101,7 @@ public class GUIRestaurant extends JFrame{
     	//if (newFrameValidation()) {
     		this.chef = new GUIChef(res.getMenu());
     		this.chef.setVisible(true);
-    		this.dispose();
+    		// this.dispose();
     	//}
     }
     private void waiterButtonActionPerformed(ActionEvent e) throws IOException{

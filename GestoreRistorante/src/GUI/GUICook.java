@@ -12,8 +12,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import application.DynamicJTable;
-
 public class GUICook extends JFrame{
 	
 	private OrderHolder orderHolder;

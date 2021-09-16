@@ -1,4 +1,4 @@
-package applicationTester;
+package GUITester;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import application.DynamicJTable;
+import GUI.DynamicJTable;
 import restaurant.Restaurant;
 
 public class DynamicJTableTester {

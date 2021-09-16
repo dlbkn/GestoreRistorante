@@ -10,8 +10,6 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import application.DynamicJTable;
-
 public class GUICash extends JFrame{
 	private PaymentHolder payments;
 	private DynamicJTable table;

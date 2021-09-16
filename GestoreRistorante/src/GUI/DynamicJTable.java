@@ -1,4 +1,4 @@
-package application;
+package GUI;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;

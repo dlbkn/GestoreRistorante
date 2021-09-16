@@ -15,9 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-
-import application.DynamicJTable;
-
 public class GUIOrder extends JFrame{
 	private OpenOrder openOrder;
 	private DefaultTableModel model;
@@ -42,7 +39,7 @@ public class GUIOrder extends JFrame{
         JPanel panel = new JPanel();
         
         String[] column = new String[] {
-                "Item", "Amount "
+                "Item", "Amountï¿½"
             };
         
         JButton exit = new JButton("EXIT");

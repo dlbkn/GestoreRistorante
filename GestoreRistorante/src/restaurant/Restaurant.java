@@ -21,7 +21,6 @@ public class Restaurant {
 
 	/**
 	 * Constructs a new Restaurant object
-	 * TO BE CONSTRUCTED IN MAIN
 	 * @param pathToMenu the path to the menu
 	 * @throws IOException 
 	 */
@@ -34,7 +33,6 @@ public class Restaurant {
 
 	/**
 	 * Gets the restaurant menu
-	 * TO BE GIVEN TO THE CHECF AND MENU GUI
 	 * @return the restaurant menu
 	 */
 	public Menu getMenu() {
@@ -43,7 +41,6 @@ public class Restaurant {
 	
 	/**
 	 * Gets the restaurant OpenOrder
-	 * TO BE GIVEN TO THE WAITER GUI
 	 * @return the restaurant order creator 
 	 */
 	public OpenOrder getOpenOrder() {
@@ -52,7 +49,6 @@ public class Restaurant {
 
 	/**
 	 * Gets the restaurant OrderHolder
-	 * TO BE GIVEN TO THE COOK GUI
 	 * @return the restaurant order holder
 	 */
 	public OrderHolder getOrderHolder() {
@@ -61,7 +57,6 @@ public class Restaurant {
 
 	/**
 	 * Gets the restaurant PaymentHolder
-	 * TO BE GIVEN TO THE CASHIER GUI
 	 * @return the restaurant payment holder
 	 */
 	public PaymentHolder getPaymentHolder() {

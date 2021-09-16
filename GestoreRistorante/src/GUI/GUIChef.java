@@ -8,8 +8,6 @@ import java.io.*;
 
 import javax.swing.*;
 
-import application.DynamicJTable;
-
 public class GUIChef extends JFrame{
 	
 	private Menu menu;
@@ -514,13 +512,11 @@ public class GUIChef extends JFrame{
     }
     
     private void exitButtonActionPerformed(ActionEvent e) throws IOException{
-    	GUIRestaurant r = new GUIRestaurant();
-        r.setVisible(true);
         this.dispose();
     }
     
     private JScrollPane reloadMenu() throws IOException {
-    	String[] column = new String[] {"Item", "Price (€)"};
+    	String[] column = new String[] {"Item", "Price (ï¿½)"};
     	//piatti = menu.getItems();
     	
     	table = new DynamicJTable(this.menu, column);

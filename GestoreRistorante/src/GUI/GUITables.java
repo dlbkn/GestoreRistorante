@@ -13,8 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import application.DynamicJTable;
-
 public class GUITables extends JFrame{
 	private DynamicJTable table;
 	private JScrollPane scroll;
