@@ -106,7 +106,7 @@ public class GUIRestaurant extends JFrame{
     }
     private void waiterButtonActionPerformed(ActionEvent e) throws IOException{
     	//if (newFrameValidation()) {
-    		this.waiter = new GUIWaiter(res.getOpenOrder());
+    		this.waiter = new GUIWaiter(res.getOpenOrder(), res.getMenu());
     		this.waiter.setVisible(true);
     	//}
     }

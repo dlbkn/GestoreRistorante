@@ -15,21 +15,31 @@ import javax.swing.*;
 
 
 public class GUIWaiter extends JFrame{
-	private Menu menu = new Menu("GestoreRistorante\\resources\\menu");
+	private Menu menu;
 	private OpenOrder openOrder;
 	private JTextField text;
 	//private Container c;
 	
-	
-	public GUIWaiter(OpenOrder openOrder) throws FileNotFoundException, IOException{
+	/**
+	 * Construct a new GUIWaiter object
+	 * @param openOrder orders
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public GUIWaiter(OpenOrder openOrder, Menu menu) throws FileNotFoundException, IOException{
 		this.openOrder = openOrder;
+		this.menu = menu;
         init();
     }
     
+	/**
+	 * Creation of the frame, panel and buttons
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
     private void init() throws FileNotFoundException, IOException{
     	
         //Creation of Frame
-    	//Creazione del frame
         setTitle("WAITER");
         setSize(420, 310);
         setLocationRelativeTo(null);
@@ -37,11 +47,7 @@ public class GUIWaiter extends JFrame{
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        
-        //Container c = this.getContentPane();
-        
         // Creation of panel
-        //Creazione del panel
         JPanel panel = new JPanel();
         
         //Creation of Button for order, exit
@@ -60,7 +66,6 @@ public class GUIWaiter extends JFrame{
         menuPanel.setSize(420, 310);
         
         //Creates new label for the panel
-        //Creazione scritte per il panel
         JLabel itemsLabel = new JLabel("Items");
         JLabel priceLabel = new JLabel("Price");
         JLabel amountLabel = new JLabel("Amount");
@@ -81,10 +86,12 @@ public class GUIWaiter extends JFrame{
         amountLabel.setLocation(25, 0);
         amountLabel.setSize(100,40);
         
+        //Adjust amount field
         text = new JTextField(10);
         text.setSize(35, 25);
         text.setLocation(25, 36);
         
+        //Adding elements to the panels
         menuPanel.add(itemsLabel);
         menuPanel.add(priceLabel);
         menuPanel.add(amountLabel);
@@ -121,24 +128,24 @@ public class GUIWaiter extends JFrame{
         
     }
     
-    //Action Performed per tornare indietro
+    /**
+     * Exit button action. Return to the Main menu
+     * @param e event
+     * @throws IOException
+     */
     private void exitButtonActionPerformed(ActionEvent e) throws IOException{
-    	/*
-    	 * ERRORE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    	 * 
-    	 * Creazione di un nuovo GUIRistorante crea un nuovo classe Restaurant
-    	 * Quel nuovo classe Restaurant e vuoto allora ordini vengono persi 
-    	 * 
-    	 */
-    	// GUIRistorante r = new GUIRistorante(); //  <--------------
-        // r.setVisible(true);
         this.setVisible(false);
     }
     
-    //Action Performed per aggiornare il frame e andare al pannello dell'ordine
+    /**
+     * Open the order frame
+     * @param e
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     private void orderButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
     	if(!openOrder.empty()) {
-    		GUIOrder r = new GUIOrder(openOrder);
+    		GUIOrder r = new GUIOrder(openOrder, menu);
 	        r.setVisible(true);
 	        this.dispose();
     	}else {
@@ -147,15 +154,20 @@ public class GUIWaiter extends JFrame{
     	
     }
     
-    //Metodo per creare i bottoni per l'ordinazione di un determinato piatto
+    /**
+     * Create a menu of button to click and order items
+     * @param size
+     * @return
+     * @throws FileNotFoundException
+     */
     private JPanel createButtonMenu(Dimension size) throws FileNotFoundException{
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(null);
         int x = 36;
         
-        // creo una lista di JButton che verrà riempita tramite il for, che a sua volta legge
-        // degli Object. Nel for, oltre alla creazione dei bottoni, è presente anche un
-        // Action Listener che, se premuto,aggiunge il piatto con l'annessa quantità all'ordine.
+        //Creates a list of JButtons which will be filled by the for, which in turn reads objects.
+        //In the for, in addition to the creation of the buttons, there is also an Action Listener 
+        //which, if pressed, adds the dish with the attached quantity to the order.
         
         ArrayList<JButton> list = new ArrayList<JButton>();
         for(int i = 0; i < menu.getItems().length; i++) {
@@ -164,7 +176,7 @@ public class GUIWaiter extends JFrame{
             list.get(i).setBounds(6, x, 90, size.height);
             list.get(i).setLocation(125, x);
             
-            JLabel price = new JLabel("� " + menu.getItemPrice(list.get(i).getText()));
+            JLabel price = new JLabel("� " + menu.getItemPrice(list.get(i).getText()));
             
             price.setSize(100, 20);
             price.setLocation(330, x);
@@ -175,7 +187,7 @@ public class GUIWaiter extends JFrame{
             buttonPanel.add(price);
             String name = (String) menu.getItems()[i][0];
             
-            
+            //ActionListener for the menu buttons
             list.get(i).addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent e){
@@ -195,9 +207,21 @@ public class GUIWaiter extends JFrame{
         }
         return buttonPanel;
     }
+    
+    /**
+     * Check if a given string contains only letters
+     * @param name the string to check if contains only letters
+     * @return
+     */
     public boolean isAlpha(String name) {
         return name.matches("[a-zA-Z]+");
     }
+    
+    /**
+     * Check if a given string contains only numbers and comma
+     * @param value the string to check if contains only numbers and point
+     * @return
+     */
     public boolean isDigit(String valore) {
     	return valore.matches("[0-9.]+");
     }

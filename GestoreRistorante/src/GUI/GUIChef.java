@@ -16,6 +16,12 @@ public class GUIChef extends JFrame{
 	private JScrollPane scroll;
 	private JPanel menuPanel = new JPanel();
 	
+	/**
+	 * Construct a new GUICheff object
+	 * @param menu the menu of the restaurant
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public GUIChef(Menu menu) throws FileNotFoundException, IOException{
 		super();
 		this.menu = menu;
@@ -23,8 +29,11 @@ public class GUIChef extends JFrame{
         init();         
     }
 	
+	/**
+	 * Create the frame, panels and buttons
+	 */
     private void init() throws FileNotFoundException, IOException{
-    	
+    	//Creation of the frame
         setTitle("CHEF");
         setSize(520, 310);
         setLocationRelativeTo(null);
@@ -32,15 +41,12 @@ public class GUIChef extends JFrame{
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        
-        JPanel buttonPanel = new JPanel();
-        
+        //Creation of the buttons
         JButton add = new JButton("NEW");
         JButton delete = new JButton("DELETE");
         JButton edit = new JButton("EDIT");
         JButton exit = new JButton("BACK");
-        
-
+    
         Dimension size = delete.getPreferredSize();
         
         add.setBounds(6, 10, size.width, size.height);
@@ -48,77 +54,57 @@ public class GUIChef extends JFrame{
         edit.setBounds(6, 130, size.width, size.height);
         exit.setBounds(6, 235, size.width, size.height);
         
+        //Creation of the panels
+        JPanel buttonPanel = new JPanel();
+        JPanel addPanel = addItem();
+        JPanel editPanel = editItem();
+        
+        addPanel.setSize(420, 400);
+        
+        editPanel.setSize(420, 400);
+        
         buttonPanel.setSize(100, 520);
         buttonPanel.setLayout(null);
+        buttonPanel.setBackground(Color.white);
+        
+        menuPanel.setSize(520,150);
+        menuPanel.setLayout(null);
+        
+        //Adding elements to the panels
         buttonPanel.add(add);
         buttonPanel.add(edit);
         buttonPanel.add(delete);
         buttonPanel.add(exit);
-        buttonPanel.setBackground(Color.white);//Da cambiare/eliminare
-        
-        menuPanel.setSize(520,150);
-        menuPanel.setLayout(null);
-        menuPanel.setBackground(Color.red);//Da cambiare/eliminare
         menuPanel.add(scroll);
         
+        //Adjust the scroll
         scroll.setLocation(100, 0);
         scroll.setSize(405,150);
         scroll.setVisible(true);
-        //text.setEditable(false);
         table.setShowGrid(false);
         
-        JPanel addPanel = addItem();
-        //JPanel pdel = rimuoviPiatto();
-        JPanel editPanel = editItem();
-       
-        //c.add(padd);
-        
-        //c.add(pdel);
-         
+        //Adding the panels to the frame
         add(buttonPanel);
         add(menuPanel);
         add(addPanel);
-        //add(pdel);
         add(editPanel);
         
-        
-        addPanel.setSize(420, 400);
-        addPanel.setBackground(Color.yellow);//Da cambiare/eliminare
-        
-        //pdel.setSize(420, 400);
-        //pdel.setBackground(Color.black);//Da cambiare/eliminare
-        
-        editPanel.setSize(420, 400);
-        editPanel.setBackground(Color.green);//Da cambiare/eliminare
-        
-        //Listener Bottoni  
-        
+        //Action listener for the button add  
         add.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-            	//padd.setVisible(true); 
             	if(addPanel.isVisible()){
                     addPanel.setVisible(false);
                     
                 }else{
-                	//pdel.setVisible(false);
                 	editPanel.setVisible(false);
                     addPanel.setVisible(true);
                 }
             }                
         });
         
+        //Delete the item of a selected row
         delete.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-            	/*
-            	if(pdel.isVisible()){
-                    pdel.setVisible(false);
-                    
-                }else{
-                	padd.setVisible(false);
-                	pedit.setVisible(false);
-                    pdel.setVisible(true);
-                
-                }*/
             	if(table.getSelectedRow() != -1) {
             		int reply = JOptionPane.showConfirmDialog(null, "Delete this item?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
 	            	if (reply == JOptionPane.YES_OPTION) {
@@ -131,7 +117,6 @@ public class GUIChef extends JFrame{
 	    				}
 	            	} else {
 	            	    JOptionPane.showMessageDialog(null, "Item not deleted");
-	            	    //System.exit(0);
 	            	}
             	}else {
             		JOptionPane.showMessageDialog(null, "Select a row");
@@ -142,6 +127,7 @@ public class GUIChef extends JFrame{
             }                
         });
         
+        //Show the panel to edit one item
         edit.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             	
@@ -150,11 +136,11 @@ public class GUIChef extends JFrame{
                     
                 }else{
                 	addPanel.setVisible(false);
-                	//pdel.setVisible(false);
                     editPanel.setVisible(true);
                 }
             }                
         });
+        //Return to the Main menu
         exit.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
@@ -170,19 +156,38 @@ public class GUIChef extends JFrame{
   
     }
     
-    
-    
+    /**
+     * Creation of the panel to add items on menu
+     * @return the panel to add items on menu
+     */
     private JPanel addItem() {
+    	//Creation of the panel to return
     	JPanel addPanel = new JPanel();
+        addPanel.setLayout(null);
+        addPanel.setVisible(false);
         
+        //Creation of the button save
+        JButton save = new JButton("ADD");
+        save.setBounds(270, 195, 70, 25);
+        
+        //Creation of the text fields
         JTextField itemNameField = new JTextField("Item name");
         JTextField itemPriceField = new JTextField("Item price");
         
-        JButton save = new JButton("ADD");
-        
         itemNameField.setForeground(new Color(153,153,153));
+        itemNameField.setLocation(146, 180);
+        itemNameField.setSize(100, 25);
+        
         itemPriceField.setForeground(new Color(153,153,153));
-   
+        itemPriceField.setLocation(146, 210);
+        itemPriceField.setSize(100, 25);
+        
+        //Adding elements to the panel
+        addPanel.add(itemNameField);
+        addPanel.add(itemPriceField);
+        addPanel.add(save); 
+        
+        //Focus listener for the text fields
         itemNameField.addFocusListener(new FocusListener(){
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -233,106 +238,57 @@ public class GUIChef extends JFrame{
 			}
         	
         });
-        
+        //Add the item to the menu
         save.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
             	
             	try {
 					saveButtonActionPerformed(e, itemNameField,  itemPriceField);
-				} catch (IOException e1) {
+				} catch (NumberFormatException | IOException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Use only numbers and one comma, " + itemPriceField.getText() + " is not a valid number");
+					itemPriceField.setText("Item price");
+					itemPriceField.setForeground(Color.GRAY);
 				}
             }
         });
         
-        itemNameField.setLocation(146, 185);
-        itemNameField.setSize(100, 20);
-        
-        itemPriceField.setLocation(146, 215);
-        itemPriceField.setSize(100, 20);
-        
-        save.setBounds(270, 200, 75, 20);
-        
-        addPanel.setLayout(null);
-        addPanel.add(itemNameField);
-        addPanel.add(itemPriceField);
-        addPanel.add(save); 
-        addPanel.setVisible(false);
-               
         return addPanel;
     }
-    /*
-    private JPanel rimuoviPiatto() {
-    	JPanel jpr = new JPanel();
-    	JButton rimuovi = new JButton("RIMUOVI");
-    	/*
-    	JTextField piattoRemover = new JTextField("Piatto da rimuovere");
-    	piattoRemover.setForeground(new Color(153,153,153));
-    	
-    	piattoRemover.addFocusListener(new FocusListener(){
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				if(piattoRemover.getText().equals("Piatto da rimuovere")) {
-					piattoRemover.setText("");
-					piattoRemover.setForeground(Color.BLACK);
-				}else if (piattoRemover.getText().equals("") ){
-					piattoRemover.setForeground(Color.GRAY);
-				}
-				
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				if(piattoRemover.getText().equals("")) {
-					piattoRemover.setText("Piatto da rimuovere");
-					piattoRemover.setForeground(Color.GRAY);
-				}else {
-					piattoRemover.setForeground(Color.BLACK);
-				}
-			}
-        	
-        //});
-    	
-    	rimuovi.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e){
-            	
-            	try {
-					removeButtonActionPerformed(e);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-            }
-        });
-    	
-    	//piattoRemover.setLocation(146, 200);
-    	//piattoRemover.setSize(120, 20);
-    	rimuovi.setBounds(270, 200, 90, 20);
-    	
-    	jpr.setLayout(null);
-        //jpr.add(piattoRemover);
-        jpr.add(rimuovi);
-        jpr.setVisible(false);
-    	
-    	return jpr;
-    }
-    */
     
+    /**
+     * Creation of the panel to edit items on menu
+     * @return the panel to edit items on menu
+     */
     private JPanel editItem() {
+    	//Creation of the panel to return
     	JPanel editPanel = new JPanel();
+    	editPanel.setLayout(null);
+    	editPanel.setVisible(false);
+    	
+    	//Creation of the button edit
     	JButton edit = new JButton("EDIT");
+    	edit.setBounds(270, 195, 70, 25);
     	
+    	//Creation of the text fields
     	JTextField item = new JTextField("Item");
-    	item.setForeground(new Color(153,153,153));
-    	
     	JTextField newPrice = new JTextField("New price");
-    	newPrice.setForeground(new Color(153,153,153));
+
+    	item.setForeground(new Color(153,153,153));
+    	item.setLocation(146, 180);
+    	item.setSize(100, 25);
     	
+    	newPrice.setForeground(new Color(153,153,153));
+    	newPrice.setLocation(146, 210);
+    	newPrice.setSize(100, 25);
+
+    	//Adding elements to the panel
+        editPanel.add(item);
+        editPanel.add(newPrice);
+        editPanel.add(edit);
+    	
+    	//Focus listener for the text fields
     	item.addFocusListener(new FocusListener(){
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -384,15 +340,22 @@ public class GUIChef extends JFrame{
 			}
         	
         });
-    	
+    	//Edit the item
     	edit.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
             	
             	try {
 					editButtonActionPerformed(e, item, newPrice);
-				} catch (Exception e1) {
+				}catch(NumberFormatException e1){
+					
+					JOptionPane.showMessageDialog(null, "Use only numbers and one comma, " + newPrice.getText() + " is not a valid number");
+					newPrice.setText("New price");
+		    		newPrice.setForeground(Color.GRAY);
+					
+				}catch (IllegalArgumentException e1) {
 					// TODO Auto-generated catch block
+					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "The item doesn't exist");
 					
 					item.setText("Item");
@@ -400,30 +363,25 @@ public class GUIChef extends JFrame{
 		            
 		            newPrice.setText("New price");
 		    		newPrice.setForeground(Color.GRAY);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
             }
         });
     	
-    	item.setLocation(146, 185);
-    	newPrice.setLocation(146, 215);
-    	
-    	item.setSize(100, 20);
-
-    	newPrice.setSize(100, 20);
-    	edit.setBounds(270, 200, 75, 20);
-    	
-    	editPanel.setLayout(null);
-        editPanel.add(item);
-
-        editPanel.add(newPrice);
-        editPanel.add(edit);
-        editPanel.setVisible(false);
-    	
     	return editPanel;
     }
     
+    /**
+     * Add the item on menu
+     * @param e event 
+     * @param itemNameField the item name to add on menu
+     * @param itemPriceField the item price to add on menu
+     * @throws IOException
+     */
     private void saveButtonActionPerformed(ActionEvent e, JTextField itemNameField, JTextField itemPriceField) throws IOException{
-    	
+    	//Check if the name field contains only text or the price field contains only numbers and comma
     	if(!isAlpha(itemNameField.getText())) {
     		
     		JOptionPane.showMessageDialog(null, "Use only letters");
@@ -437,17 +395,12 @@ public class GUIChef extends JFrame{
     	}else if (!isDigit(itemPriceField.getText())){
     
     		JOptionPane.showMessageDialog(null, "Use only numbers and comma");
-    		
-    		//nomePiattoField.setText("Nome Piatto");
-	        //nomePiattoField.setForeground(Color.GRAY);
-	        
 	        itemPriceField.setText("Item price");
 	        itemPriceField.setForeground(Color.GRAY);
 	        
     	}else {
     	
     		menu.addItem(itemNameField.getText(), Double.parseDouble(itemPriceField.getText()));
-	        System.out.print(itemNameField.getText() + Double.parseDouble(itemPriceField.getText()));
 	        menu.WriteToFile();                
 	        
 	        menuPanel.remove(scroll);            
@@ -461,20 +414,29 @@ public class GUIChef extends JFrame{
 	        itemPriceField.setForeground(Color.GRAY);
     	}    	
     }
-  
+    
+    /**
+     * Remove the selected item on menu
+     * @param e event
+     * @throws IOException
+     */
     private void removeButtonActionPerformed(ActionEvent e) throws IOException {
     	menu.removeItem(table.getSelectedKey().toString());
     	menu.WriteToFile();
     	menuPanel.remove(scroll);            
         scroll = reloadMenu();
         menuPanel.add(scroll);
-        
-        //piattoRemover.setText("Piatto da rimuovere");
-		//piattoRemover.setForeground(Color.GRAY);
     }
     
+    /**
+     * Edit the items on menu
+     * @param e event
+     * @param item the item name to edit
+     * @param newPrice the new price to add
+     * @throws IOException
+     */
     private void editButtonActionPerformed(ActionEvent e, JTextField item, JTextField newPrice) throws IOException {
-    	
+    	//Check if the name field contains only text or the price field contains only numbers and comma
     	if(!isAlpha(item.getText())) {
     		
     		JOptionPane.showMessageDialog(null, "Use only letters");
@@ -511,30 +473,49 @@ public class GUIChef extends JFrame{
     	}
     }
     
+    /**
+     * Dispose the current frame and create a new main menu frame
+     * @param e
+     * @throws IOException
+     */
     private void exitButtonActionPerformed(ActionEvent e) throws IOException{
+    	//GUIRestaurant r = new GUIRestaurant();
+        //r.setVisible(true);
         this.dispose();
     }
     
+    /**
+     * Reload the menu to update the items
+     * @return the updated table menu
+     * @throws IOException
+     */
     private JScrollPane reloadMenu() throws IOException {
     	String[] column = new String[] {"Item", "Price (�)"};
-    	//piatti = menu.getItems();
     	
     	table = new DynamicJTable(this.menu, column);
     	table.setShowGrid(false);
-        //table.setEnabled(false);
         
     	scroll = new JScrollPane (table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     	scroll.setLocation(100, 0);
         scroll.setSize(405,150);
-        //scroll.setVisible(true);
                 
     	return scroll;
     }
     
+    /**
+     * Check if a given string contains only letters
+     * @param name the string to check if contains only letters
+     * @return
+     */
     public boolean isAlpha(String name) {
         return name.matches("[a-zA-Z]+");
     }
     
+    /**
+     * Check if a given string contains only numbers and comma
+     * @param value the string to check if contains only numbers and point
+     * @return
+     */
     public boolean isDigit(String value) {
     	return value.matches("[0-9.]+");
     }

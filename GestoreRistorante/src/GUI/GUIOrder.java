@@ -1,6 +1,7 @@
 package GUI;
 
 import restaurant.OpenOrder;
+import restaurant.Menu;
 
 
 import java.awt.event.ActionEvent;
@@ -17,10 +18,12 @@ import javax.swing.table.DefaultTableModel;
 
 public class GUIOrder extends JFrame{
 	private OpenOrder openOrder;
+	private Menu menu;
 	private DefaultTableModel model;
 	
-	public GUIOrder(OpenOrder openOrder) throws FileNotFoundException, IOException {
+	public GUIOrder(OpenOrder openOrder, Menu m) throws FileNotFoundException, IOException {
 		this.openOrder = openOrder;
+		this.menu = m;
 		init();
 		// TODO Auto-generated constructor stub
 	}
@@ -39,7 +42,7 @@ public class GUIOrder extends JFrame{
         JPanel panel = new JPanel();
         
         String[] column = new String[] {
-                "Item", "Amount�"
+                "Item", "Amount"
             };
         
         JButton exit = new JButton("EXIT");
@@ -184,8 +187,8 @@ public class GUIOrder extends JFrame{
 	}
 	//Action Performed per tornare alla schermata del cameriere
 	private void exitButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
-    	GUIWaiter r = new GUIWaiter(openOrder);
-        r.setVisible(true);
+		GUIWaiter waiter = new GUIWaiter(openOrder, menu);
+		waiter.setVisible(true);
         this.dispose();
     }
 	

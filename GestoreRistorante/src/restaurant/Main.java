@@ -12,10 +12,10 @@ import GUI.GUIRestaurant;
 public class Main {
 	
 	// Set MENU to the path of the menu file
-	private static String MENU = "GestoreRistorante\\resources\\menu";
+	private static String MENU = "resources/menu";
 	
 	// Set SCONTRINI to the path of the receipts folder
-	private static String SCONTRINI = "GestoreRistorante\\resources\\";
+	private static String SCONTRINI = "resources/";
 	
 	/**
 	 * Starts running GestoreRistorante
