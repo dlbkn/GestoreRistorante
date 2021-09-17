@@ -3,7 +3,7 @@ package GUI;
 import restaurant.OpenOrder;
 import restaurant.Menu;
 
-
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -13,24 +13,34 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class GUIOrder extends JFrame{
 	private OpenOrder openOrder;
 	private Menu menu;
-	private DefaultTableModel model;
 	
-	public GUIOrder(OpenOrder openOrder, Menu m) throws FileNotFoundException, IOException {
+	/**
+	 * Construct a new GUIOrder object
+	 * @param openOrder the orders
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public GUIOrder(OpenOrder openOrder,Menu menu) throws FileNotFoundException, IOException {
+		this.menu = menu;
 		this.openOrder = openOrder;
-		this.menu = m;
 		init();
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * Create the frame, panel and buttons
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	private void init() throws FileNotFoundException, IOException{
-		
-		// Creazione del Frame
+		//Creation of the frame
 		setTitle("ORDER");
         setSize(420, 310);
         setLocationRelativeTo(null);
@@ -38,47 +48,61 @@ public class GUIOrder extends JFrame{
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        //Container c = this.getContentPane(); 
+        //Creation of the panels
         JPanel panel = new JPanel();
+        JPanel panelTable = new JPanel();
         
-        String[] column = new String[] {
-                "Item", "Amount"
-            };
+        panel.setLayout(null);
+        panel.setSize(115, 300);
+        panel.setLocation(0,0);
+        panel.setBackground(Color.white);
         
+        panelTable.setLayout(null);
+        panelTable.setSize(290,300);
+        panelTable.setLocation(120,0);
+
+        //Creation of the buttons 
         JButton exit = new JButton("EXIT");
-        add(panel);
-        exit.setLocation(0,300);
-        
-        JButton remove = new JButton("REMOVE"); 
-        remove.setLocation(6,235);
+        JButton remove = new JButton("REMOVE");
         JButton clear = new JButton("CLEAR");
         JButton send  = new JButton("SEND");
         
-        DynamicJTable table = new DynamicJTable(openOrder,column);
-        table.setSize(200,200);
-        table.setLocation(50,50);
+        exit.setLocation(0,300);
+        remove.setLocation(6,235);
         
         exit.setBounds(6, 210, 100, 30);
         remove.setBounds(6, 150, 100, 30);
         clear.setBounds(6, 90, 100, 30);
         send.setBounds(6, 30, 100, 30);
-        table.setBounds(120, 30, 200, 200);
         
         
-        panel.setLayout(null);
+        //Creation of the table with scroll
+        String[] column = new String[] {"Item", "Amount�"};
+        DynamicJTable table = new DynamicJTable(openOrder,column);
+        table.setShowGrid(false);
         
-        panel.add(table);
+        JScrollPane scroll = new JScrollPane (table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setSize(260,200);
+        scroll.setLocation(130,30);
+
+        //Adding elements to the panel
+        panelTable.add(scroll);
         panel.add(clear);
         panel.add(remove);
         panel.add(send);
         panel.add(exit);
         
-      //Manda l'ordine al Cuoco, prima però selezionando il tavolo che ha fatto l'ordine
+        
+        //Add the panel to the frame
+        add(panel);
+        add(panelTable);
+        
+        //Send the order to the Cook selecting the table
         send.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
             	if(!openOrder.empty()) {
-            		//creazione panel per immettere il numero del tavolo
+            		//Creation of the panel to add the table
             		JPanel panelSend = new JPanel();
 	                JTextField num = new JTextField(3);
 	                panelSend.add(num);
@@ -93,7 +117,7 @@ public class GUIOrder extends JFrame{
 							openOrder.sendOrder(Integer.parseInt(num.getText()));
 							exitButtonActionPerformed(e);
 						}catch (NumberFormatException nfe) {
-							JOptionPane.showMessageDialog(null, "Use only numbers");
+							JOptionPane.showMessageDialog(null, "Use only numbers, " + num.getText() + " is not a valid number");
 						}catch (IOException e1) {
 							// TODO Auto-generated catch block
 							JOptionPane.showMessageDialog(null, "Enter amount");
@@ -107,18 +131,17 @@ public class GUIOrder extends JFrame{
             }
         });
         
-        // Rimuove una determinata quantità di un piatto ordinato
+        //Removes a certain amount of a item
         remove.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
             	if(!openOrder.empty()) {
             		int row = table.getSelectedRow();
 
-	            	//Controllo se è stata selezionata una riga dalla tabella, se non è stata
-	            	//selezionata allora darà una schermata di errore.
+	            	//Check if there is a selected row
 	            	if (row >= 0) {
 	            		
-	            		//creazione panel per immettere la quantità da togliere
+	            		//Creation of the panel to remove a certain amount of ordered items 
 	                    JPanel panel = new JPanel();
 	                    JTextField num = new JTextField(3);
 	                    panel.add(num);
@@ -127,7 +150,7 @@ public class GUIOrder extends JFrame{
 	                    "Quit" };                                                         
 	                    int result = JOptionPane.showOptionDialog(null,panel, "Amount to delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
 	                            null, options, null);
-	                    //prova a convertire la stringa in intero
+	                    //Try to convert String to int
 	                    if(result == JOptionPane.OK_OPTION) {
 	                    	try{
 		                        Integer.parseInt(num.getText());
@@ -152,7 +175,7 @@ public class GUIOrder extends JFrame{
             }
         });
         
-        //Cancella l'intero ordine
+        //Delete the entire order
         clear.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
@@ -170,7 +193,7 @@ public class GUIOrder extends JFrame{
         });
         
         
-        //Torna alla schermata del cameriere
+        //Back to the waiter frame
         exit.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e){
@@ -185,12 +208,17 @@ public class GUIOrder extends JFrame{
         }); 
         
 	}
-	//Action Performed per tornare alla schermata del cameriere
+	
+	/**
+	 * Action to return on the waiter frame
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	private void exitButtonActionPerformed(ActionEvent e) throws FileNotFoundException, IOException{
-		GUIWaiter waiter = new GUIWaiter(openOrder, menu);
-		waiter.setVisible(true);
+    	GUIWaiter r = new GUIWaiter(openOrder, menu);
+        r.setVisible(true);
         this.dispose();
     }
 	
-
 }

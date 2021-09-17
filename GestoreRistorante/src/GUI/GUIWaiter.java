@@ -18,7 +18,6 @@ public class GUIWaiter extends JFrame{
 	private Menu menu;
 	private OpenOrder openOrder;
 	private JTextField text;
-	//private Container c;
 	
 	/**
 	 * Construct a new GUIWaiter object
@@ -27,8 +26,8 @@ public class GUIWaiter extends JFrame{
 	 * @throws IOException
 	 */
 	public GUIWaiter(OpenOrder openOrder, Menu menu) throws FileNotFoundException, IOException{
-		this.openOrder = openOrder;
 		this.menu = menu;
+		this.openOrder = openOrder;
         init();
     }
     
@@ -38,8 +37,7 @@ public class GUIWaiter extends JFrame{
 	 * @throws IOException
 	 */
     private void init() throws FileNotFoundException, IOException{
-    	
-        //Creation of Frame
+        //Creation of the frame
         setTitle("WAITER");
         setSize(420, 310);
         setLocationRelativeTo(null);
@@ -47,35 +45,34 @@ public class GUIWaiter extends JFrame{
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        // Creation of panel
+        // Creation of the panel just for background color
         JPanel panel = new JPanel();
+        
+        panel.setLayout(null);
+        panel.setSize(410, 50);
+        panel.setLocation(0,220);
+        panel.setBackground(Color.white);
         
         //Creation of Button for order, exit
         JButton order = new JButton("ORDER");
         JButton exit = new JButton("BACK");
+        
         Dimension size = exit.getPreferredSize();
+        exit.setBounds(6, 235, size.width, size.height);
+        order.setBounds(300, 235, 90, size.height);
         
         //Creation second panel for locate the button
-        JPanel menuPanel = createButtonMenu(size); 
-        add(menuPanel);
-        add(panel);
-                   
-        //panel size
-        panel.setSize(100, 300);
-        panel.setLocation(0,300);
-        menuPanel.setSize(420, 310);
+        JPanel menuPanel = new JPanel();
+        menuPanel.setLayout(null);
+        menuPanel.setSize(405, 310);
+        
+        JScrollPane scroll = new JScrollPane (createButtonMenu(size), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setBounds(95,40,310,180);
         
         //Creates new label for the panel
         JLabel itemsLabel = new JLabel("Items");
         JLabel priceLabel = new JLabel("Price");
         JLabel amountLabel = new JLabel("Amount");
-        
-        exit.setBounds(6, 235, size.width, size.height);
-        order.setBounds(300, 235, 90, size.height);
-        
-        panel.setLayout(null);
-        menuPanel.setLayout(null);
-        //p2 = creaMenuBottoni();
         
         itemsLabel.setLocation(125, 0);
         itemsLabel.setSize(100, 40);
@@ -88,17 +85,21 @@ public class GUIWaiter extends JFrame{
         
         //Adjust amount field
         text = new JTextField(10);
-        text.setSize(35, 25);
+        text.setSize(45, 25);
         text.setLocation(25, 36);
         
         //Adding elements to the panels
+        menuPanel.add(scroll);
         menuPanel.add(itemsLabel);
         menuPanel.add(priceLabel);
         menuPanel.add(amountLabel);
         menuPanel.add(text);
+        menuPanel.add(exit);
+        menuPanel.add(order);
+        menuPanel.add(panel);
         
-        panel.add(exit);
-        panel.add(order);
+        //Adding the panel to the frame 
+        add(menuPanel);
         
         // Action Listener per tornare indietro.
         exit.addActionListener(new ActionListener()
@@ -162,9 +163,12 @@ public class GUIWaiter extends JFrame{
      */
     private JPanel createButtonMenu(Dimension size) throws FileNotFoundException{
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(null);
-        int x = 36;
         
+        int x = 5;
+        GridLayout gl = new GridLayout(0,2);
+        gl.setHgap(135);
+        gl.setVgap(5);
+        buttonPanel.setLayout(gl);
         //Creates a list of JButtons which will be filled by the for, which in turn reads objects.
         //In the for, in addition to the creation of the buttons, there is also an Action Listener 
         //which, if pressed, adds the dish with the attached quantity to the order.
@@ -174,13 +178,9 @@ public class GUIWaiter extends JFrame{
         	list.add(new JButton((String) menu.getItems()[i][0]));
         	
             list.get(i).setBounds(6, x, 90, size.height);
-            list.get(i).setLocation(125, x);
+            list.get(i).setLocation(15, x);
             
             JLabel price = new JLabel("� " + menu.getItemPrice(list.get(i).getText()));
-            
-            price.setSize(100, 20);
-            price.setLocation(330, x);
-            
             x+=30;
             
             buttonPanel.add(list.get(i));
@@ -195,7 +195,7 @@ public class GUIWaiter extends JFrame{
                 	if(isDigit(val)) {
                 		int num = Integer.parseInt(val);
                 		openOrder.addItem(name,num); 
-                		System.out.println(openOrder.getOrderMap());
+                		//System.out.println(openOrder.getOrderMap());
                 		text.setText("");
                 	}else {
                 		JOptionPane.showMessageDialog(null, "Use only numbers");
